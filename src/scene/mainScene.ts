@@ -2,11 +2,17 @@ import 'phaser';
 
 import Background from '../components/background';
 import Controls from '../controls/controls';
+import Map from '../components/map';
+import TilesGroup from '../components/tilesGroup';
+import { TilesConfig } from '../types/types';
+import MiniMap from '../components/miniMap';
 
 export default class MainScene extends Phaser.Scene {
   background: Background;
   level: number;
   controls: Controls;
+  tilesGroup: TilesGroup;
+  miniMap: MiniMap;
 
   constructor() {
     super({
@@ -14,36 +20,49 @@ export default class MainScene extends Phaser.Scene {
     });
   }
 
-  preload() {
-    this.load.image('background', '../assets/background.jpg');
+  init(props: { level?: number }) {
+    const { level = 0 } = props
+    this.level = Map.calcCurrentLevel(level)
   }
 
   create() {
-    // const map = new Map(this.level);
+    const map = new Map(this.level);
 
     this.cameras.main.setBackgroundColor('#ade6ff');
     this.cameras.main.fadeIn();
 
-    // this.cameras.main.setBounds(
-    //   map.size.x,
-    //   map.size.y,
-    //   map.size.width,
-    //   map.size.height
-    // );
-    // this.physics.world.setBounds(
-    //   map.size.x,
-    //   map.size.y,
-    //   map.size.width,
-    //   map.size.height
-    // );
+    this.cameras.main.setBounds(
+      map.size.x,
+      map.size.y,
+      map.size.width,
+      map.size.height
+    );
+    this.physics.world.setBounds(
+      map.size.x,
+      map.size.y,
+      map.size.width,
+      map.size.height
+    );
 
-    // const bg = this.add.image(0, 0, 'background').setOrigin(0, 0);
-
-    // const scaleX = this.scale.width / bg.width;
-    // const scaleY = this.scale.height / bg.height;
-    // bg.setScale(Math.max(scaleX, scaleY));
     this.background = new Background(this);
     this.controls = new Controls(this);
+    this.tilesGroup = new TilesGroup(this, map.info.filter((el: TilesConfig) => el.type === 'tile'));
+
+    this.miniMap = new MiniMap(
+      this,
+      10,
+      10,
+      Math.min(map.size.width / 8, (map.size.height / 8) * 2.5),
+      map.size.height / 8,
+      map
+    )
+    this.miniMap.setIgnore([
+      this.background,
+      this.controls.buttons.up,
+      this.controls.buttons.left,
+      this.controls.buttons.right,
+    ])
+    // this.miniMap.update(this.player)
 
     const resize = () => {
       this.controls.adjustPositions();
