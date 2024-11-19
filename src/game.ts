@@ -1,6 +1,5 @@
 import 'phaser';
 
-import * as SpineWebGLPlugin from './plugins/SpineWebGLPlugin';
 import MainScene from './scene/mainScene';
 import PreloadScene from './scene/preloadScene';
 
@@ -18,13 +17,9 @@ window.addEventListener('load', () => {
     backgroundColor: '#ffffff',
     parent: 'phaser-game',
     scale: {
-      // The game will be scaled manually in the resize()
       mode: Phaser.Scale.NONE,
       width: DEFAULT_WIDTH,
       height: DEFAULT_HEIGHT
-    },
-    plugins: {
-      scene: [{ key: 'SpineWebGLPlugin', plugin: SpineWebGLPlugin, start: true, sceneKey: 'spine' }]
     },
     scene: [PreloadScene, MainScene],
     physics: {

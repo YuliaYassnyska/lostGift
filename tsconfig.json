@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "moduleResolution": "node",
-        "typeRoots": ["./node_modules/@types", "./custom.d.ts", "./phaser.d.ts"],
+        "typeRoots": ["./node_modules/@types", "./phaser.d.ts"],
         "target": "ES2020",
         "useDefineForClassFields": true,
         "module": "ESNext",
@@ -15,7 +15,7 @@
     "types": [
       "phaser"
     ],
-    "include": ["src/**/*"],
+    "include": ["src/**/*", "phaser.d.ts"],
     "exclude": [
         "node_modules",
         "**/*.spec.ts"
