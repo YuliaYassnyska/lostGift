@@ -1,5 +1,5 @@
 import Map from './map'
-// import Player from './player/player'
+import Santa from './santa'
 
 export default class MiniMap {
   camera: Phaser.Cameras.Scene2D.BaseCamera
@@ -19,8 +19,8 @@ export default class MiniMap {
     })
   }
 
-  // update(player: Player) {
-  //   this.camera.scrollX = player.x
-  //   this.camera.scrollY = player.y
-  // }
+  update(santa: Santa) {
+    this.camera.scrollX = santa.x
+    this.camera.scrollY = santa.y
+  }
 }
