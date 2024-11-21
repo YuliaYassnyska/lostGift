@@ -1,3 +1,5 @@
+export const santaElements = ['SantaWalk-1', 'SantaWalk-2', 'SantaWalk-3', 'SantaWalk-4', 'SantaWalk-5', 'SantaWalk-6', 'SantaWalk-7', 'SantaWalk-8'];
+
 export default class PreloadScene extends Phaser.Scene {
   constructor() {
     super({
@@ -11,15 +13,14 @@ export default class PreloadScene extends Phaser.Scene {
       this.load.spritesheet(img, `assets/${img}.png`, { frameHeight: 100, frameWidth: 100 });
     });
 
-    const santaElements = ['SantaWalk-1', 'SantaWalk-2', 'SantaWalk-3', 'SantaWalk-4', 'SantaWalk-5', 'SantaWalk-6', 'SantaWalk-7', 'SantaWalk-8'];
+    
     santaElements.forEach(img => {
-      this.load.image(img, `assets/${img}.png`)
+      this.load.spritesheet(img, `assets/${img}.png`, { frameHeight: 600, frameWidth: 600 })
     });
 
     this.load.image('background', `assets/background.jpg`);
     this.load.image('santa', `assets/Santa.png`);
     this.load.image('gift', `assets/gift.png`);
-    
   }
 
   create() {

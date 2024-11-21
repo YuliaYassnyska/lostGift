@@ -9,6 +9,7 @@ import MiniMap from '../components/miniMap';
 import Santa from '../components/santa';
 import GiftGroup from '../components/giftGroup';
 import GiftSingle from '../components/giftSingle';
+import { santaElements } from './preloadScene';
 
 export default class MainScene extends Phaser.Scene {
   background: Background;
@@ -50,11 +51,24 @@ export default class MainScene extends Phaser.Scene {
     );
 
     this.input.addPointer(1);
-    this.cursors = this.input.keyboard.createCursorKeys();
+
+    this.cursors = this.input.keyboard.addKeys({
+      left: Phaser.Input.Keyboard.KeyCodes.A,
+      up: Phaser.Input.Keyboard.KeyCodes.W,
+      right: Phaser.Input.Keyboard.KeyCodes.D,
+      space: Phaser.Input.Keyboard.KeyCodes.SPACE,
+    });
+
+    this.anims.create({
+      key: 'walk',
+      frames: santaElements.map((img, index) => ({ key: img, frame: index })),
+      frameRate: 8, 
+      repeat: -1 
+    });
 
     this.cameras.main.setBounds(
       map.size.x,
-      map.size.y + 70,
+      map.size.y,
       map.size.width,
       map.size.height
     );
@@ -103,7 +117,6 @@ export default class MainScene extends Phaser.Scene {
       this.controls.buttons.right,
     ]);
     this.miniMap.update(this.santa);
-    // this.miniMap.update(this.player)
 
     const resize = () => {
       this.controls.adjustPositions();

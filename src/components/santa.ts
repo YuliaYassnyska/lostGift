@@ -6,11 +6,7 @@ export default class Santa extends Phaser.Physics.Arcade.Sprite {
   private _halt: boolean = false;
   private mapSize: MapSize;
 
-  constructor(
-    scene: Phaser.Scene,
-    santa: TilesConfig,
-    mapSize: MapSize,
-  ) {
+  constructor(scene: Phaser.Scene, santa: TilesConfig, mapSize: MapSize) {
     super(scene, santa.x, santa.y, santa.texture);
     scene.add.existing(this);
     scene.physics.add.existing(this);
@@ -19,10 +15,9 @@ export default class Santa extends Phaser.Physics.Arcade.Sprite {
     this.mapSize = mapSize;
 
     this.setScale(0.5);
-    this.setOrigin(0, 1);
+    this.setOrigin(0.5, 1);
     this.setDragX(1500);
-    this.body.setSize(70, 132);
-    this.body.setOffset(25, 24);
+    this.body.setSize(70, 432);
   }
 
   kill() {
@@ -57,12 +52,23 @@ export default class Santa extends Phaser.Physics.Arcade.Sprite {
     if (cursors.left.isDown || controls.leftIsDown) {
       this.setVelocityX(-500);
       this.setFlipX(true);
+      if (!this.anims.isPlaying || this.anims.currentAnim.key !== 'walk') {
+        this.play('walk'); 
+      }
     } else if (cursors.right.isDown || controls.rightIsDown) {
       this.setVelocityX(550);
       this.setFlipX(false);
+      if (!this.anims.isPlaying || this.anims.currentAnim.key !== 'walk') {
+        this.play('walk');
+      }
+    } else {
+      this.setVelocityX(0);
+      if (this.anims.isPlaying) {
+        this.stop(); 
+      }
     }
     if (
-      (cursors.up.isDown || cursors.space.isDown || controls.upIsDown) &&
+      (cursors.up?.isDown || cursors.space?.isDown || controls.upIsDown) &&
       this.body.blocked.down
     ) {
       this.setVelocityY(-1250);

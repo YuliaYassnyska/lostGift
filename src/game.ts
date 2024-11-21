@@ -71,7 +71,6 @@ window.addEventListener('load', () => {
     game.canvas.style.width = newWidth * scale + 'px'
     game.canvas.style.height = newHeight * scale + 'px'
 
-    // center the game with css margin
     game.canvas.style.marginTop = `${(h - newHeight * scale) / 2}px`
     game.canvas.style.marginLeft = `${(w - newWidth * scale) / 2}px`
   }
