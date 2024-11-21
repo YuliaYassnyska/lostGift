@@ -1,4 +1,5 @@
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import CopyPlugin from "copy-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "path";
 import webpack from "webpack";
@@ -6,7 +7,7 @@ import webpack from "webpack";
 export default {
     mode: "development",
     devtool: "eval-source-map",
-    entry: "./src/game.js",
+    entry: "./src/game.ts",
     output: {
         path: path.resolve(process.cwd(), 'dist'),
         filename: "bundle.min.js"
@@ -34,7 +35,7 @@ export default {
             },
             {
                 test: /\.(gif|png|jpe?g|svg|xml|glsl)$/i,
-                type: 'asset/resource'
+                type: 'asset/resource',
             }
         ]
     },
@@ -54,6 +55,11 @@ export default {
         new HtmlWebpackPlugin({
             template: "./index.html",
             favicon: "./favicon.ico"
-        })
+        }),
+        new CopyPlugin({
+            patterns: [
+                { from: 'src/assets', to: 'assets' },
+            ]
+        }),
     ]
 };
