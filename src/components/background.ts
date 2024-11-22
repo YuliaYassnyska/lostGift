@@ -4,6 +4,7 @@ export default class Background extends Phaser.GameObjects.TileSprite {
     scene.add.existing(this);
 
     this.setOrigin(0.5).setScrollFactor(0);
+    this.addSnowflakes(scene);
   }
 
   adjustPosition() {
@@ -16,5 +17,25 @@ export default class Background extends Phaser.GameObjects.TileSprite {
 
   parallax() {
     this.tilePositionX = this.scene.cameras.main.worldView.x * 0.2;
+  }
+
+  addSnowflakes(scene) {
+    const mapBounds = scene.physics.world.bounds;
+
+    const particles = scene.add.particles(0, 0, 'snowflake',{
+      x: { min: mapBounds.left, max: mapBounds.right },
+      y: 0, 
+      lifespan: 8000, 
+      speedY: { min: 50, max: 150 }, 
+      scale: { start: 0.5, end: 0.2 },
+      alpha: { start: 1, end: 0 }, 
+      quantity: 1, 
+      frequency: 100, 
+      blendMode: 'ADD', 
+    });
+
+    scene.cameras.main.on('cameraupdate', (camera) => {
+      particles.setPosition(camera.worldView.x, camera.worldView.y); // Оновлення позиції еміттера
+    });
   }
 }

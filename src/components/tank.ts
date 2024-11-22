@@ -18,7 +18,7 @@ export default class TankSprite extends EnemyClass {
 
   kill() {
     if (this.dead) return
-    this.setFrame(5)
+    this.setFrame(10)
     this.removeEnemy()
   }
 }
