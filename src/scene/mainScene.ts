@@ -153,5 +153,6 @@ export default class MainScene extends Phaser.Scene {
     this.background.parallax();
     this.santa.update(this.cursors, this.controls);
     this.miniMap.update(this.santa);
+    this.enemiesGroup.update();
   }
 }
