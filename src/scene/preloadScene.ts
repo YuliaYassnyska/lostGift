@@ -21,6 +21,8 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('background', `assets/background.jpg`);
     this.load.image('santa', `assets/Santa.png`);
     this.load.image('gift', `assets/gift.png`);
+    this.load.image('snowman', `assets/SnowMan.png`);
+    this.load.image('tank', `assets/tank.png`);
   }
 
   create() {

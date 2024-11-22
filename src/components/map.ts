@@ -53,18 +53,22 @@ export default class Map {
         type: 'gift',
         texture: 'gift',
       },
-      //   O: {
-      //     type: 'coin',
-      //     texture: 'coin'
-      //   },
-      //   B: {
-      //     type: 'enemy',
-      //     texture: 'bee'
-      //   },
+      T: {
+        type: 'enemy',
+        texture: 'tank'
+      },
+      M: {
+        type: 'enemy',
+        texture: 'snowman'
+      },
       S: {
         type: 'santa',
         texture: 'santa',
       },
+      D: {
+        type: 'decor',
+        texture: 'snowhome',
+      }
     };
 
     const map = Levels[Map.calcCurrentLevel(currentLevel)];

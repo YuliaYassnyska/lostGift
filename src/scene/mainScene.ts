@@ -10,6 +10,8 @@ import Santa from '../components/santa';
 import GiftGroup from '../components/giftGroup';
 import GiftSingle from '../components/giftSingle';
 import { santaElements } from './preloadScene';
+import EnemiesGroup from '../components/enemiesGroup';
+import TankSprite from '../components/tank';
 
 export default class MainScene extends Phaser.Scene {
   background: Background;
@@ -19,6 +21,7 @@ export default class MainScene extends Phaser.Scene {
   miniMap: MiniMap;
   santa: Santa;
   cursors: Phaser.Input.Keyboard.CursorKeys;
+  enemiesGroup: EnemiesGroup;
 
   constructor() {
     super({
@@ -62,8 +65,8 @@ export default class MainScene extends Phaser.Scene {
     this.anims.create({
       key: 'walk',
       frames: santaElements.map((img, index) => ({ key: img, frame: index })),
-      frameRate: 8, 
-      repeat: -1 
+      frameRate: 8,
+      repeat: -1,
     });
 
     this.cameras.main.setBounds(
@@ -94,10 +97,24 @@ export default class MainScene extends Phaser.Scene {
       this,
       map.info.filter((el: TilesConfig) => el.type === 'gift')
     );
+    this.enemiesGroup = new EnemiesGroup(this, map.info);
 
     this.cameras.main.startFollow(this.santa);
 
     this.physics.add.collider(this.tilesGroup, this.santa);
+    this.physics.add.collider(this.tilesGroup, this.enemiesGroup);
+
+
+    this.physics.add.overlap(this.santa, this.enemiesGroup, (santa: Santa, enemy: TankSprite) => {
+      if (enemy.dead) return
+      if (enemy.body.touching.up && santa.body.touching.down) {
+        santa.killEnemy()
+        enemy.kill()
+      } else {
+        santa.kill()
+      }
+    })
+
     this.physics.add.overlap(this.santa, giftGroup, (_, gift) => {
       if (gift instanceof GiftSingle) gift.collect();
     });
