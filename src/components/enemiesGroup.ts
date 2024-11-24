@@ -1,4 +1,5 @@
 import TankSprite from './tank';
+import SnowmanSprite from './snowman';
 import { TilesConfig } from '../types/types';
 
 export default class EnemiesGroup extends Phaser.GameObjects.Group {
@@ -16,14 +17,16 @@ export default class EnemiesGroup extends Phaser.GameObjects.Group {
         case 'tank':
           enemies.push(new TankSprite(scene, enemy.x, enemy.y))
           break
+        case 'snowman':
+          enemies.push(new SnowmanSprite(scene, enemy.x, enemy.y))
+          break
       }
     })
     this.addMultiple(enemies)
   }
 
   update() {
-    this.children.iterate((enemy: Phaser.GameObjects.GameObject) => {
-      if (!(enemy instanceof TankSprite)) return true;
+    this.children.iterate((enemy: TankSprite | SnowmanSprite) => {
 
       const body = enemy.body as Phaser.Physics.Arcade.Body;
 
