@@ -12,6 +12,7 @@ import GiftSingle from '../components/giftSingle';
 import { santaElements } from './preloadScene';
 import EnemiesGroup from '../components/enemiesGroup';
 import TankSprite from '../components/tank';
+import LevelEnd from '../components/levelEnd';
 
 export default class MainScene extends Phaser.Scene {
   background: Background;
@@ -22,6 +23,7 @@ export default class MainScene extends Phaser.Scene {
   santa: Santa;
   cursors: Phaser.Input.Keyboard.CursorKeys;
   enemiesGroup: EnemiesGroup;
+  levelEnd: LevelEnd;
 
   constructor() {
     super({
@@ -98,6 +100,7 @@ export default class MainScene extends Phaser.Scene {
       map.info.filter((el: TilesConfig) => el.type === 'gift')
     );
     this.enemiesGroup = new EnemiesGroup(this, map.info);
+    this.levelEnd = new LevelEnd(this, map.info.filter((el: TilesConfig) => el.type === 'end')[0]);
 
     this.cameras.main.startFollow(this.santa);
 
@@ -118,6 +121,11 @@ export default class MainScene extends Phaser.Scene {
     this.physics.add.overlap(this.santa, giftGroup, (_, gift) => {
       if (gift instanceof GiftSingle) gift.collect();
     });
+    // @ts-ignore
+    this.physics.add.overlap(this.santa, this.levelEnd, (santa: Santa, levelEnd: LevelEnd) => {
+      santa.halt()
+      levelEnd.nextLevel(this, this.level)
+    })
 
     this.miniMap = new MiniMap(
       this,
@@ -151,6 +159,7 @@ export default class MainScene extends Phaser.Scene {
 
   update() {
     this.background.parallax();
+    this.controls.update();
     this.santa.update(this.cursors, this.controls);
     this.miniMap.update(this.santa);
     this.enemiesGroup.update();

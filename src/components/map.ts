@@ -68,6 +68,10 @@ export default class Map {
       D: {
         type: 'decor',
         texture: 'snowhome',
+      },
+      E: {
+        type: 'end',
+        texture: 'end'
       }
     };
 

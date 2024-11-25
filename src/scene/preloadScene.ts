@@ -24,6 +24,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('snowman', `assets/SnowMan.png`);
     this.load.image('tank', `assets/tank.png`);
     this.load.image('snowflake', `assets/snowflake.png`);
+    this.load.image('end', 'assets/home.png');
   }
 
   create() {

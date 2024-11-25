@@ -64,12 +64,12 @@ export default class SnowmanSprite extends EnemyClass {
   
   appearDisappearCycle() {
     this.scene.time.addEvent({
-      delay: Phaser.Math.Between(4000, 8000), 
+      delay: Phaser.Math.Between(2000, 6000), 
       callback: () => {
         if (!this.dead) {
           this.appear(); 
           this.scene.time.addEvent({
-            delay: 3000, 
+            delay: 5000, 
             callback: () => {
               if (!this.dead) this.disappear(); 
             },
