@@ -1,6 +1,8 @@
 type Level = string[]
 
 const level0: Level = [
+    '                                  ',
+    '           *111112                ',
     '     G T                          ',
     '  *111112                         ',
     '                                  ',

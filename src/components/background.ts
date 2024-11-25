@@ -35,7 +35,7 @@ export default class Background extends Phaser.GameObjects.TileSprite {
     });
 
     scene.cameras.main.on('cameraupdate', (camera) => {
-      particles.setPosition(camera.worldView.x, camera.worldView.y); // Оновлення позиції еміттера
+      particles.setPosition(camera.worldView.x, camera.worldView.y);
     });
   }
 }
