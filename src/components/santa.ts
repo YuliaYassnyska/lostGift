@@ -17,7 +17,7 @@ export default class Santa extends Phaser.Physics.Arcade.Sprite {
     this.setScale(0.5);
     this.setOrigin(0.5, 1);
     this.setDragX(1500);
-    this.body.setSize(70, 432);
+    this.body.setSize(350, 432);
   }
 
   kill() {
