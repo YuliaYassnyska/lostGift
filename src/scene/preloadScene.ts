@@ -8,6 +8,7 @@ export default class PreloadScene extends Phaser.Scene {
   }
 
   preload() {
+    this.load.image('end', 'assets/home.png');
     const mapElements = ['1', '2', '3', '4', '5', '6', '14', '15', '16',];
     mapElements.forEach(img => {
       this.load.spritesheet(img, `assets/${img}.png`, { frameHeight: 100, frameWidth: 100 });
@@ -24,7 +25,6 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('snowman', `assets/SnowMan.png`);
     this.load.image('tank', `assets/tank.png`);
     this.load.image('snowflake', `assets/snowflake.png`);
-    this.load.image('end', 'assets/home.png');
     this.load.image('menu-background', 'assets/menu-back.jpg');
     this.load.image('button', 'assets/button.png');
   }

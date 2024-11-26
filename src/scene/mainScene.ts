@@ -90,6 +90,7 @@ export default class MainScene extends Phaser.Scene {
       this,
       map.info.filter((el: TilesConfig) => el.type === 'tile')
     );
+    this.levelEnd = new LevelEnd(this, map.info.filter((el: TilesConfig) => el.type === 'end')[0]);
     this.santa = new Santa(
       this,
       map.info.filter((el: TilesConfig) => el.type === 'santa')[0],
@@ -100,7 +101,6 @@ export default class MainScene extends Phaser.Scene {
       map.info.filter((el: TilesConfig) => el.type === 'gift')
     );
     this.enemiesGroup = new EnemiesGroup(this, map.info);
-    this.levelEnd = new LevelEnd(this, map.info.filter((el: TilesConfig) => el.type === 'end')[0]);
 
     this.cameras.main.startFollow(this.santa);
 
