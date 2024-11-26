@@ -3,6 +3,7 @@ import 'phaser';
 import MainScene from './scene/mainScene';
 import PreloadScene from './scene/preloadScene';
 import MenuScene from './scene/menuScene';
+import VideoScene from './scene/storyScene';
 
 type scaleMode = 'FIT' | 'SMOOTH';
 
@@ -22,7 +23,7 @@ window.addEventListener('load', () => {
       width: DEFAULT_WIDTH,
       height: DEFAULT_HEIGHT
     },
-    scene: [PreloadScene, MenuScene, MainScene],
+    scene: [PreloadScene, MenuScene, VideoScene, MainScene],
     physics: {
       default: 'arcade',
       arcade: {

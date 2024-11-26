@@ -114,6 +114,29 @@ export default class MenuScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
+    const story = this.add.sprite(centerX, centerY + buttonSpacing + buttonSpacing, 'button').setInteractive();
+    story.on('pointerdown', () => {
+      this.tweens.add({
+        targets: story,
+        scaleX: 0.45,
+        scaleY: 0.45,
+        duration: 200,
+        yoyo: true,
+        ease: 'Sine.easeInOut',
+        onComplete: () => this.scene.start('VideoScene'),
+      });
+    });
+    story.setScale(0.5)
+
+    this.add
+      .text(story.x, story.y - 5, 'Game story', {
+        fontSize: '36px',
+        color: '#BFECFF',
+        stroke: '#fff',
+        strokeThickness: 2
+      })
+      .setOrigin(0.5);
+
 
     this.scale.on('resize', () => {
       this.background.adjustPosition();
