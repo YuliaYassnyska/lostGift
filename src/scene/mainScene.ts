@@ -13,6 +13,7 @@ import { santaElements } from './preloadScene';
 import EnemiesGroup from '../components/enemiesGroup';
 import TankSprite from '../components/tank';
 import LevelEnd from '../components/levelEnd';
+import DecorationsGroup from '../components/decorGroup';
 
 export default class MainScene extends Phaser.Scene {
   background: Background;
@@ -24,6 +25,7 @@ export default class MainScene extends Phaser.Scene {
   cursors: Phaser.Input.Keyboard.CursorKeys;
   enemiesGroup: EnemiesGroup;
   levelEnd: LevelEnd;
+  decorationsGroup: DecorationsGroup;
 
   constructor() {
     super({
@@ -91,6 +93,7 @@ export default class MainScene extends Phaser.Scene {
       map.info.filter((el: TilesConfig) => el.type === 'tile')
     );
     this.levelEnd = new LevelEnd(this, map.info.filter((el: TilesConfig) => el.type === 'end')[0]);
+    this.decorationsGroup = new DecorationsGroup(this, map.info);
     this.santa = new Santa(
       this,
       map.info.filter((el: TilesConfig) => el.type === 'santa')[0],
@@ -163,5 +166,6 @@ export default class MainScene extends Phaser.Scene {
     this.santa.update(this.cursors, this.controls);
     this.miniMap.update(this.santa);
     this.enemiesGroup.update();
+    this.decorationsGroup.update();
   }
 }

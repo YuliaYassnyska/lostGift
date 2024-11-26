@@ -16,6 +16,12 @@ export default class PreloadScene extends Phaser.Scene {
 
     this.load.video('story', 'assets/story.mp4');
     this.load.audio('story-audio', 'assets/story-audio.mp3');
+    this.load.image('crystal', 'assets/Crystal.png');
+    this.load.image('sign-2', 'assets/Sign_2.png');
+    this.load.image('sign-1', 'assets/Sign_1.png');
+    this.load.image('stone', 'assets/Stone.png');
+    this.load.image('tree-group', 'assets/Tree_1.png');
+    this.load.image('tree', 'assets/Tree_2.png');
     
     santaElements.forEach(img => {
       this.load.spritesheet(img, `assets/${img}.png`, { frameHeight: 600, frameWidth: 600 })

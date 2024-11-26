@@ -59,19 +59,39 @@ export default class Map {
       },
       M: {
         type: 'enemy',
-        texture: 'snowman'
+        texture: 'snowman',
       },
       S: {
         type: 'santa',
         texture: 'santa',
       },
-      D: {
+      C: {
         type: 'decor',
-        texture: 'snowhome',
+        texture: 'crystal',
+      },
+      I: {
+        type: 'decor',
+        texture: 'sign-2',
+      },
+      '3': {
+        type: 'decor',
+        texture: 'sign-1',
+      },
+      '4': {
+        type: 'decor',
+        texture: 'stone',
+      },
+      '5': {
+        type: 'decor',
+        texture: 'tree-group',
+      },
+      '6': {
+        type: 'decor',
+        texture: 'tree',
       },
       E: {
         type: 'end',
-        texture: 'end'
+        texture: 'end',
       }
     };
 
