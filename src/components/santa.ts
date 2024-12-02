@@ -14,7 +14,7 @@ export default class Santa extends Phaser.Physics.Arcade.Sprite {
     this.scene = scene;
     this.mapSize = mapSize;
 
-    this.setScale(0.5);
+    this.setScale(0.3);
     this.setOrigin(0.5, 1);
     this.setDragX(1500);
     this.body.setSize(350, 432);
@@ -63,8 +63,8 @@ export default class Santa extends Phaser.Physics.Arcade.Sprite {
       }
     } else {
       this.setVelocityX(0);
-      if (this.anims.isPlaying) {
-        this.stop(); 
+      if (!this.anims.isPlaying || this.anims.currentAnim.key !== 'idle') {
+        this.play('idle');
       }
     }
     if (

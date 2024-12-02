@@ -9,7 +9,7 @@ import MiniMap from '../components/miniMap';
 import Santa from '../components/santa';
 import GiftGroup from '../components/giftGroup';
 import GiftSingle from '../components/giftSingle';
-import { santaElements } from './preloadScene';
+import { santaElementsIdle, santaElementsWalk } from './preloadScene';
 import EnemiesGroup from '../components/enemiesGroup';
 import TankSprite from '../components/tank';
 import LevelEnd from '../components/levelEnd';
@@ -69,8 +69,15 @@ export default class MainScene extends Phaser.Scene {
 
     this.anims.create({
       key: 'walk',
-      frames: santaElements.map((img, index) => ({ key: img, frame: index })),
+      frames: santaElementsWalk.map((img, index) => ({ key: img, frame: index })),
       frameRate: 8,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: 'idle',
+      frames: santaElementsIdle.map((img, index) => ({ key: img, frame: index })),
+      frameRate: 16,
       repeat: -1,
     });
 
