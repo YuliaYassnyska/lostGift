@@ -18,7 +18,7 @@ export default class EnemiesGroup extends Phaser.GameObjects.Group {
           enemies.push(new TankSprite(scene, enemy.x, enemy.y))
           break
         case 'snowman':
-          enemies.push(new SnowmanSprite(scene, enemy.x, enemy.y))
+          enemies.push(new SnowmanSprite(scene, enemy.x, enemy.y, this.TILE_SIZE))
           break
       }
     })

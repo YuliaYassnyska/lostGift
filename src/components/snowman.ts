@@ -1,36 +1,86 @@
 import EnemyClass from './enemyClass';
 
 export default class SnowmanSprite extends EnemyClass {
-  text: Phaser.GameObjects.Text;
+  text: Phaser.GameObjects.Text | null = null;
   isAppearing: boolean = false;
+  moveDirection: number = 1; 
+  tileBounds: { x: number; width: number }; 
 
-  constructor(scene: Phaser.Scene, x: number, y: number) {
+  constructor(scene: Phaser.Scene, x: number, y: number, tileWidth: number) {
     super(scene, x, y, 'snowman');
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    this.setOrigin(0.5, 1).setScale(1);
+    this.setOrigin(0.5, 1).setScale(0.8);
     //@ts-ignore
-    this.body.setVelocityX(-60);
     this.body.setSize(this.width - 40, this.height - 20);
     this.body.setOffset(20, 20);
 
-    this.dead = false;
     this.alpha = 0;
+    this.body.enable = false;
 
-    this.appearDisappearCycle();
+    this.tileBounds = { x: x - tileWidth / 2, width: tileWidth };
+
+    this.startAppearDisappearCycle();
   }
 
-  appear() {
-    if (this.dead || this.isAppearing) return; 
+  private startAppearDisappearCycle() {
+    this.scene.time.addEvent({
+      delay: Phaser.Math.Between(3000, 8000),
+      callback: () => {
+        if (!this.dead) this.appear();
+      },
+      loop: true,
+    });
+  }
+
+  private appear() {
+    if (this.isAppearing || this.dead) return;
+
     this.isAppearing = true;
-
     this.alpha = 0;
-    this.setPosition(
-      Phaser.Math.Between(100, this.scene.cameras.main.width - 100),
-      Phaser.Math.Between(100, this.scene.cameras.main.height - 100)
-    );
 
+    this.scene.tweens.add({
+      targets: this,
+      alpha: 1,
+      duration: 1000,
+      onStart: () => {
+        this.body.enable = true;
+        this.startMovement();
+        this.showText();
+      },
+      onComplete: () => {
+        this.scene.time.addEvent({
+          delay: 3000,
+          callback: () => {
+            this.stopMovement();
+            this.disappear();
+          },
+        });
+        this.isAppearing = false;
+      },
+    });
+  }
+
+  private disappear() {
+    if (this.isAppearing || this.dead) return;
+
+    this.isAppearing = true;
+    this.hideText();
+
+    this.scene.tweens.add({
+      targets: this,
+      alpha: 0,
+      duration: 1000,
+      onComplete: () => {
+        this.body.enable = false;
+        this.isAppearing = false;
+      },
+    });
+  }
+
+  private showText() {
+    if (this.text) this.text.destroy();
     this.text = this.scene.add.text(this.x, this.y - 50, 'Сніговик слідкує за тобою', {
       font: '20px Arial',
       //@ts-ignore
@@ -39,69 +89,50 @@ export default class SnowmanSprite extends EnemyClass {
       strokeThickness: 4,
       align: 'center',
     }).setOrigin(0.5);
-
-    this.scene.tweens.add({
-      targets: this,
-      alpha: { from: 0, to: 1 },
-      duration: 1000,
-      onStart: () => {
-        this.body.enable = true;
-      },
-      onComplete: () => {
-        this.isAppearing = false; 
-      },
-    });
-
-    this.scene.time.addEvent({
-      delay: 2000,
-      callback: () => {
-        if (this.text) this.text.destroy();
-      },
-    });
   }
 
-  disappear() {
-    if (this.dead || this.isAppearing) return; 
-    this.isAppearing = true;
-
-    this.scene.tweens.add({
-      targets: this,
-      alpha: { from: 1, to: 0 },
-      duration: 1000,
-      onComplete: () => {
-        this.body.enable = false;
-        this.isAppearing = false; 
-      },
-    });
+  private hideText() {
+    if (this.text) {
+      this.text.destroy();
+      this.text = null;
+    }
   }
 
-  appearDisappearCycle() {
+  private startMovement() {
     this.scene.time.addEvent({
-      delay: Phaser.Math.Between(2000, 6000),
+      delay: 30,
       callback: () => {
-        if (!this.dead) {
-          this.appear();
-          this.scene.time.addEvent({
-            delay: 5000,
-            callback: () => {
-              if (!this.dead) this.disappear();
-            },
-          });
+        const body = this.body as Phaser.Physics.Arcade.Body;
+
+        if (this.x <= this.tileBounds.x) {
+          this.moveDirection = 1;
+          this.setFlipX(false);
+        } else if (this.x >= this.tileBounds.x + this.tileBounds.width) {
+          this.moveDirection = -1;
+          this.setFlipX(true);
         }
+
+        body.setVelocityX(this.moveDirection * 50);
       },
       loop: true,
     });
   }
 
+  private stopMovement() {
+    const body = this.body as Phaser.Physics.Arcade.Body;
+    body.setVelocityX(0);
+  }
+
   kill() {
     if (this.dead) return;
+    
     this.dead = true;
-
     this.isAppearing = false;
-
     if (this.text) this.text.destroy();
-    this.setFrame(30);
+
+    this.scene.tweens.killTweensOf(this);
+    this.scene.time.removeAllEvents();
+    this.stopMovement();
     this.removeEnemy();
   }
 }
-
