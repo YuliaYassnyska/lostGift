@@ -24,7 +24,7 @@ export default class DecorationsGroup extends Phaser.GameObjects.Group {
   }
 
   update() {
-    this.children.iterate((decoration: DecorationSprite) => {
+    this.children.iterate(() => {
       return true;
     });
   }

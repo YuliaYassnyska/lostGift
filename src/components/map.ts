@@ -92,6 +92,10 @@ export default class Map {
       E: {
         type: 'end',
         texture: 'end',
+      },
+      R: {
+        type: 'reindeer',
+        texture: 'reindeer',
       }
     };
 

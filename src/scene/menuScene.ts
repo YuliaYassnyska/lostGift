@@ -57,7 +57,7 @@ export default class MenuScene extends Phaser.Scene {
         duration: 200,
         yoyo: true,
         ease: 'Sine.easeInOut',
-        onComplete: () => this.startLevel(1),
+        onComplete: () => this.startLevel(0),
       });
     });
     this.add
@@ -78,7 +78,7 @@ export default class MenuScene extends Phaser.Scene {
         duration: 200,
         yoyo: true,
         ease: 'Sine.easeInOut',
-        onComplete: () => this.startLevel(2),
+        onComplete: () => this.startLevel(1),
       });
     });
     level2Button.setScale(0.5)
@@ -100,7 +100,7 @@ export default class MenuScene extends Phaser.Scene {
         duration: 200,
         yoyo: true,
         ease: 'Sine.easeInOut',
-        onComplete: () => this.startLevel(3),
+        onComplete: () => this.startLevel(2),
       });
     });
     level3Button.setScale(0.5)

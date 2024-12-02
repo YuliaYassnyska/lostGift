@@ -6,10 +6,21 @@ const level0: Level = [
     '    CG T                          ',
     '  *111112                         ',
     '                                  ',
-    '5 I S C    M G   IG C      G  3E  ',
+    '5 I S C    M G   IGRC      G  3E  ',
     '[/////]   [///] [///]   [////////]',
     '{~~~~~}   {~~~} {~~~}   {~~~~~~~~}',
 ]
 
-const Levels: Level[] = [level0,]
+const level1: Level = [
+    '                       ',
+    '                       ',
+    '               6 4     ',
+    '           *111112     ',
+    '                       ',
+    '5 I S C         G  3E  ',
+    '[/////]      [////////]',
+    '{~~~~~}      {~~~~~~~~}',
+]
+
+const Levels: Level[] = [level0, level1]
 export default Levels

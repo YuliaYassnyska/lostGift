@@ -11,7 +11,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('end', 'assets/home.png');
     const mapElements = ['1', '2', '3', '4', '5', '6', '14', '15', '16',];
     mapElements.forEach(img => {
-      this.load.spritesheet(img, `assets/${img}.png`, { frameHeight: 100, frameWidth: 100 });
+      this.load.image(img, `assets/${img}.png`);
     });
 
     this.load.video('story', 'assets/story.mp4');
@@ -22,6 +22,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('stone', 'assets/Stone.png');
     this.load.image('tree-group', 'assets/Tree_1.png');
     this.load.image('tree', 'assets/Tree_2.png');
+    this.load.image('reindeer', 'assets/reindeer.png');
     
     santaElements.forEach(img => {
       this.load.spritesheet(img, `assets/${img}.png`, { frameHeight: 600, frameWidth: 600 })
