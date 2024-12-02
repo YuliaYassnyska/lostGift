@@ -95,7 +95,8 @@ export default class MainScene extends Phaser.Scene {
     );
     this.levelEnd = new LevelEnd(this, map.info.filter((el: TilesConfig) => el.type === 'end')[0]);
     this.decorationsGroup = new DecorationsGroup(this, map.info);
-    const reindeer = new Reindeer(this, map.info.find((el: TilesConfig) => el.type === 'reindeer').x, map.info.find((el: TilesConfig) => el.type === 'reindeer').y);
+    const reindeerConfig = map.info.find((el: TilesConfig) => el.type === 'reindeer');
+    let reindeer: Reindeer | null = null;
     this.santa = new Santa(
       this,
       map.info.filter((el: TilesConfig) => el.type === 'santa')[0],
@@ -110,7 +111,7 @@ export default class MainScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.santa);
 
     this.physics.add.collider(this.tilesGroup, this.santa);
-    this.physics.add.collider(this.tilesGroup, reindeer);
+
     this.physics.add.collider(this.tilesGroup, this.enemiesGroup);
 
     this.physics.add.overlap(this.santa, this.enemiesGroup, (santa: Santa, enemy: TankSprite) => {
@@ -131,12 +132,14 @@ export default class MainScene extends Phaser.Scene {
       santa.halt()
       levelEnd.nextLevel(this, this.level)
     })
-
-    this.physics.add.overlap(this.santa, reindeer, (_, reindeer: Reindeer) => {
-      reindeer.triggerMagicEffect();
-      reindeer.destroy();
-    });
-    
+    if (reindeerConfig) {
+      reindeer = new Reindeer(this, reindeerConfig.x, reindeerConfig.y);
+      this.physics.add.overlap(this.santa, reindeer, (_, reindeer: Reindeer) => {
+        reindeer.triggerMagicEffect();
+        reindeer.destroy();
+      });
+      this.physics.add.collider(this.tilesGroup, reindeer);
+    }
 
     this.miniMap = new MiniMap(
       this,
