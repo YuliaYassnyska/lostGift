@@ -10,13 +10,16 @@ export default class PreloadScene extends Phaser.Scene {
 
   preload() {
     this.load.image('end', 'assets/home.png');
+    this.load.image('game-over-background', 'assets/game-over-background.jpg');
     const mapElements = ['1', '2', '3', '4', '5', '6', '14', '15', '16',];
     mapElements.forEach(img => {
       this.load.image(img, `assets/${img}.png`);
     });
-
+    
     this.load.video('story', 'assets/story.mp4');
+    this.load.video('game-over', 'assets/game-over.mp4');
     this.load.audio('story-audio', 'assets/story-audio.mp3');
+    this.load.audio('game-over-audio', 'assets/game-over-audio.mp3');
     this.load.image('crystal', 'assets/Crystal.png');
     this.load.image('sign-2', 'assets/Sign_2.png');
     this.load.image('sign-1', 'assets/Sign_1.png');
