@@ -1,4 +1,5 @@
 import Controls from '../controls/controls';
+import MainScene from '../scene/mainScene';
 import { MapSize, TilesConfig } from '../types/types';
 
 export default class Santa extends Phaser.Physics.Arcade.Sprite {
@@ -22,13 +23,18 @@ export default class Santa extends Phaser.Physics.Arcade.Sprite {
 
   kill() {
     this._dead = true;
-
+  
     this.scene.cameras.main.shake(500, 0.025);
     this.scene.time.addEvent({
       delay: 500,
-      callback: () => this.scene.scene.restart(),
+      callback: () => {
+        if (this.scene instanceof MainScene) {
+          this.scene.handleSantaDeath();
+        }
+      },
     });
   }
+  
 
   killEnemy() {
     this.setVelocityY(-600);

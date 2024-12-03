@@ -15,6 +15,7 @@ import TankSprite from '../components/tank';
 import LevelEnd from '../components/levelEnd';
 import DecorationsGroup from '../components/decorGroup';
 import Reindeer from '../components/reindeer';
+import LiftSprite from '../components/life';
 
 export default class MainScene extends Phaser.Scene {
   background: Background;
@@ -27,6 +28,8 @@ export default class MainScene extends Phaser.Scene {
   enemiesGroup: EnemiesGroup;
   levelEnd: LevelEnd;
   decorationsGroup: DecorationsGroup;
+  lives: number = 3;
+  lifeSprites: LiftSprite[] = [];
 
   constructor() {
     super({
@@ -103,6 +106,8 @@ export default class MainScene extends Phaser.Scene {
     this.levelEnd = new LevelEnd(this, map.info.filter((el: TilesConfig) => el.type === 'end')[0]);
     this.decorationsGroup = new DecorationsGroup(this, map.info);
     const reindeerConfig = map.info.find((el: TilesConfig) => el.type === 'reindeer');
+    this.lifeSprites = [];
+    this.updateLives();
     let reindeer: Reindeer | null = null;
     this.santa = new Santa(
       this,
@@ -127,7 +132,7 @@ export default class MainScene extends Phaser.Scene {
         santa.killEnemy()
         enemy.kill()
       } else {
-        santa.kill()
+        santa.kill();
       }
     })
 
@@ -185,5 +190,36 @@ export default class MainScene extends Phaser.Scene {
     this.miniMap.update(this.santa);
     this.enemiesGroup.update();
     this.decorationsGroup.update();
+  }
+
+  updateLives(reset: boolean = false) {
+    if (reset) {
+      this.lives = 3;
+    }
+
+    this.lifeSprites.forEach(sprite => sprite.destroy());
+    this.lifeSprites = [];
+
+    for (let i = 0; i < this.lives; i++) {
+      const offset = i * 50;
+      const lifeSprite = new LiftSprite(this, 0, 0, offset);
+      this.lifeSprites.push(lifeSprite);
+    }
+  }
+
+  handleSantaDeath() {
+    this.lives--; 
+    this.updateLives();
+  
+    if (this.lives <= 0) {
+      this.gameOver(); 
+    } else {
+      this.scene.restart({ level: this.level }); 
+    }
+  }
+
+  gameOver() {
+    this.updateLives(true);
+    this.scene.start('GameOverScene');
   }
 }
