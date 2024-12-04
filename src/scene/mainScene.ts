@@ -159,8 +159,8 @@ export default class MainScene extends Phaser.Scene {
     });
 
     this.physics.add.overlap(this.santa, this.levelEnd, (santa: Santa, levelEnd: LevelEnd) => {
-      santa.halt()
       if (this.collectedGifts === this.totalGifts) {
+        santa.halt()
         levelEnd.nextLevel(this, this.level);
         this.collectedGifts = 0;
       } else {
