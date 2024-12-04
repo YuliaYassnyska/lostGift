@@ -3,8 +3,8 @@ import EnemyClass from './enemyClass';
 export default class SnowmanSprite extends EnemyClass {
   text: Phaser.GameObjects.Text | null = null;
   isAppearing: boolean = false;
-  moveDirection: number = 1; 
-  tileBounds: { x: number; width: number }; 
+  moveDirection: number = 1;
+  tileBounds: { x: number; width: number };
 
   constructor(scene: Phaser.Scene, x: number, y: number, tileWidth: number) {
     super(scene, x, y, 'snowman');
@@ -25,20 +25,32 @@ export default class SnowmanSprite extends EnemyClass {
   }
 
   private startAppearDisappearCycle() {
-    this.scene.time.addEvent({
-      delay: Phaser.Math.Between(3000, 8000),
-      callback: () => {
-        if (!this.dead) this.appear();
-      },
-      loop: true,
-    });
+    const cycle = () => {
+      if (this.dead) return;
+
+
+      this.scene.time.delayedCall(Phaser.Math.Between(3000, 8000), () => {
+        if (!this.dead) {
+          this.appear(() => {
+            this.scene.time.delayedCall(Phaser.Math.Between(3000, 5000), () => {
+              if (!this.dead) {
+                this.disappear(() => {
+                  cycle();
+                });
+              }
+            });
+          });
+        }
+      });
+    };
+
+    cycle();
   }
 
-  private appear() {
+  private appear(onComplete?: () => void) {
     if (this.isAppearing || this.dead) return;
 
     this.isAppearing = true;
-    this.alpha = 0;
 
     this.scene.tweens.add({
       targets: this,
@@ -50,22 +62,17 @@ export default class SnowmanSprite extends EnemyClass {
         this.showText();
       },
       onComplete: () => {
-        this.scene.time.addEvent({
-          delay: 3000,
-          callback: () => {
-            this.stopMovement();
-            this.disappear();
-          },
-        });
         this.isAppearing = false;
+        if (onComplete) onComplete();
       },
     });
   }
 
-  private disappear() {
+  private disappear(onComplete?: () => void) {
     if (this.isAppearing || this.dead) return;
 
     this.isAppearing = true;
+
     this.hideText();
 
     this.scene.tweens.add({
@@ -75,9 +82,11 @@ export default class SnowmanSprite extends EnemyClass {
       onComplete: () => {
         this.body.enable = false;
         this.isAppearing = false;
+        if (onComplete) onComplete();
       },
     });
   }
+
 
   private showText() {
     if (this.text) this.text.destroy();
@@ -125,7 +134,7 @@ export default class SnowmanSprite extends EnemyClass {
 
   kill() {
     if (this.dead) return;
-    
+
     this.dead = true;
     this.isAppearing = false;
     if (this.text) this.text.destroy();
