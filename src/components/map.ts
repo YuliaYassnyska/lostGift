@@ -96,6 +96,10 @@ export default class Map {
       R: {
         type: 'reindeer',
         texture: 'reindeer',
+      },
+      B: {
+        type: 'enemy',
+        texture: 'fly-enemy',
       }
     };
 

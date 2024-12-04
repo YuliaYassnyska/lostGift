@@ -1,6 +1,6 @@
 export const santaElementsWalk = ['SantaWalk-1', 'SantaWalk-2', 'SantaWalk-3', 'SantaWalk-4', 'SantaWalk-5', 'SantaWalk-6', 'SantaWalk-7', 'SantaWalk-8'];
 export const santaElementsIdle = ['Idle-1', 'Idle-2', 'Idle-3', 'Idle-4', 'Idle-5', 'Idle-6', 'Idle-7', 'Idle-8', 'Idle-9', 'Idle-10', 'Idle-11', 'Idle-12', 'Idle-13', 'Idle-14', 'Idle-15', 'Idle-16'];
-
+export const birdElements = ['bird-1', 'bird-2', 'bird-3', 'bird-4',];
 export default class PreloadScene extends Phaser.Scene {
   constructor() {
     super({
@@ -40,6 +40,11 @@ export default class PreloadScene extends Phaser.Scene {
       this.load.image(img, `assets/${img}.png`)
     });
 
+    
+    birdElements.forEach(img => {
+      this.load.image(img, `assets/${img}.png`);
+    });
+
     this.load.image('background', `assets/background.jpg`);
     this.load.image('santa', `assets/Santa.png`);
     this.load.image('gift', `assets/gift.png`);
@@ -52,6 +57,6 @@ export default class PreloadScene extends Phaser.Scene {
   }
 
   create() {
-    this.scene.start('MainScene')
+    this.scene.start('MenuScene')
   }
 }
