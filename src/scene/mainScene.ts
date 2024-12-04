@@ -48,7 +48,7 @@ export default class MainScene extends Phaser.Scene {
   create() {
     const map = new Map(this.level);
     this.totalGifts = map.info.filter((el: TilesConfig) => el.type === 'gift').length;
-    this.giftText = this.add.text(0 , 0, `Gifts: ${this.collectedGifts} / ${this.totalGifts}`, {
+    this.giftText = this.add.text(0 , 0, `Подарунки: ${this.collectedGifts} / ${this.totalGifts}`, {
       font: '30px Red Hat Display, sans-serif',
       color: '#7BD3EA',
       stroke: '#fff',
@@ -244,14 +244,17 @@ export default class MainScene extends Phaser.Scene {
   }
 
   updateGiftText() {
-    this.giftText.setText(`Gifts: ${this.collectedGifts} / ${this.totalGifts}`);
+    this.giftText.setText(`Подарунки: ${this.collectedGifts} / ${this.totalGifts}`);
   }
 
   showMissingGiftsMessage() {
-    const message = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, 'Collect all gifts!', {
+    const message = this.add.text(this.cameras.main.width - 190, 150, 'Збери усі подарунки!', {
       font: '32px Arial',
       color: '#ff0000',
+      stroke: '#fff',
+      strokeThickness: 8
     }).setOrigin(0.5);
+    message.setScrollFactor(0);
     this.time.delayedCall(2000, () => message.destroy());
   }
 
