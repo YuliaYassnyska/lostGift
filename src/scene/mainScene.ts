@@ -30,6 +30,9 @@ export default class MainScene extends Phaser.Scene {
   decorationsGroup: DecorationsGroup;
   lives: number = 3;
   lifeSprites: LiftSprite[] = [];
+  totalGifts: number = 0;
+  collectedGifts: number = 0;
+  giftText: Phaser.GameObjects.Text;
 
   constructor() {
     super({
@@ -44,6 +47,15 @@ export default class MainScene extends Phaser.Scene {
 
   create() {
     const map = new Map(this.level);
+    this.totalGifts = map.info.filter((el: TilesConfig) => el.type === 'gift').length;
+    this.giftText = this.add.text(0 , 0, `Gifts: ${this.collectedGifts} / ${this.totalGifts}`, {
+      font: '30px Red Hat Display, sans-serif',
+      color: '#7BD3EA',
+      stroke: '#fff',
+      strokeThickness: 8
+    });
+    this.giftText.setDepth(100);
+    this.adjustGiftTextPosition();
 
     this.cameras.main.setBackgroundColor('#ade6ff');
     this.cameras.main.fadeIn();
@@ -118,6 +130,7 @@ export default class MainScene extends Phaser.Scene {
       this,
       map.info.filter((el: TilesConfig) => el.type === 'gift')
     );
+    
     this.enemiesGroup = new EnemiesGroup(this, map.info);
 
     this.cameras.main.startFollow(this.santa);
@@ -133,16 +146,26 @@ export default class MainScene extends Phaser.Scene {
         enemy.kill()
       } else {
         santa.kill();
+        this.collectedGifts = 0;
       }
     })
 
     this.physics.add.overlap(this.santa, giftGroup, (_, gift) => {
-      if (gift instanceof GiftSingle) gift.collect();
+      if (gift instanceof GiftSingle && !gift.collecting) {
+        this.collectedGifts += 1;
+        gift.collect();
+        this.updateGiftText();
+      }
     });
 
     this.physics.add.overlap(this.santa, this.levelEnd, (santa: Santa, levelEnd: LevelEnd) => {
       santa.halt()
-      levelEnd.nextLevel(this, this.level)
+      if (this.collectedGifts === this.totalGifts) {
+        levelEnd.nextLevel(this, this.level);
+        this.collectedGifts = 0;
+      } else {
+        this.showMissingGiftsMessage();
+      }
     })
     if (reindeerConfig) {
       reindeer = new Reindeer(this, reindeerConfig.x, reindeerConfig.y);
@@ -166,6 +189,8 @@ export default class MainScene extends Phaser.Scene {
       this.controls.buttons.up,
       this.controls.buttons.left,
       this.controls.buttons.right,
+      this.giftText,
+      ...this.lifeSprites
     ]);
     this.miniMap.update(this.santa);
 
@@ -181,6 +206,17 @@ export default class MainScene extends Phaser.Scene {
     });
 
     resize();
+  }
+
+  adjustGiftTextPosition() {
+    const padding = 30; 
+  
+    this.giftText.setPosition(
+      this.cameras.main.width - this.giftText.width - padding,
+      padding + 50
+    );
+
+    this.giftText.setScrollFactor(0);
   }
 
   update() {
@@ -207,14 +243,26 @@ export default class MainScene extends Phaser.Scene {
     }
   }
 
+  updateGiftText() {
+    this.giftText.setText(`Gifts: ${this.collectedGifts} / ${this.totalGifts}`);
+  }
+
+  showMissingGiftsMessage() {
+    const message = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, 'Collect all gifts!', {
+      font: '32px Arial',
+      color: '#ff0000',
+    }).setOrigin(0.5);
+    this.time.delayedCall(2000, () => message.destroy());
+  }
+
   handleSantaDeath() {
-    this.lives--; 
+    this.lives--;
     this.updateLives();
-  
+
     if (this.lives <= 0) {
-      this.gameOver(); 
+      this.gameOver();
     } else {
-      this.scene.restart({ level: this.level }); 
+      this.scene.restart({ level: this.level });
     }
   }
 
