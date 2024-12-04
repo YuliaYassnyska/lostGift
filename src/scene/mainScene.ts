@@ -17,6 +17,8 @@ import DecorationsGroup from '../components/decorGroup';
 import Reindeer from '../components/reindeer';
 import LiftSprite from '../components/life';
 
+const TOTAL_LEVELS = 1;
+
 export default class MainScene extends Phaser.Scene {
   background: Background;
   level: number;
@@ -48,7 +50,7 @@ export default class MainScene extends Phaser.Scene {
   create() {
     const map = new Map(this.level);
     this.totalGifts = map.info.filter((el: TilesConfig) => el.type === 'gift').length;
-    this.giftText = this.add.text(0 , 0, `Подарунки: ${this.collectedGifts} / ${this.totalGifts}`, {
+    this.giftText = this.add.text(0, 0, `Подарунки: ${this.collectedGifts} / ${this.totalGifts}`, {
       font: '30px Red Hat Display, sans-serif',
       color: '#7BD3EA',
       stroke: '#fff',
@@ -130,7 +132,7 @@ export default class MainScene extends Phaser.Scene {
       this,
       map.info.filter((el: TilesConfig) => el.type === 'gift')
     );
-    
+
     this.enemiesGroup = new EnemiesGroup(this, map.info);
 
     this.cameras.main.startFollow(this.santa);
@@ -161,8 +163,12 @@ export default class MainScene extends Phaser.Scene {
     this.physics.add.overlap(this.santa, this.levelEnd, (santa: Santa, levelEnd: LevelEnd) => {
       if (this.collectedGifts === this.totalGifts) {
         santa.halt()
-        levelEnd.nextLevel(this, this.level);
         this.collectedGifts = 0;
+        if (this.level === TOTAL_LEVELS) {
+          this.scene.start('FinishScene');
+        } else {
+          levelEnd.nextLevel(this, this.level);
+        }
       } else {
         this.showMissingGiftsMessage();
       }
@@ -209,8 +215,8 @@ export default class MainScene extends Phaser.Scene {
   }
 
   adjustGiftTextPosition() {
-    const padding = 30; 
-  
+    const padding = 30;
+
     this.giftText.setPosition(
       this.cameras.main.width - this.giftText.width - padding,
       padding + 50

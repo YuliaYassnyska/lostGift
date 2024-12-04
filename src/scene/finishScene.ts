@@ -14,13 +14,13 @@ export default class FinishScene extends Phaser.Scene {
     const centerY = this.cameras.main.centerY;
 
     const video = this.add.video(centerX, centerY, 'finish');
-    // const music = this.sound.add('finish-audio');
+    const music = this.sound.add('finish-audio');
 
     video.play();
-    // music.play();
+    music.play();
 
     video.on('complete', () => {
-    //   music.stop();
+      music.stop();
       this.scene.start('MenuScene');
     });
 
@@ -36,7 +36,7 @@ export default class FinishScene extends Phaser.Scene {
     playButton.setInteractive();
 
     this.input.keyboard.on('keydown-ENTER', () => {
-    //   music.stop();
+      music.stop();
       video.stop();
       this.scene.start('MenuScene');
     });
