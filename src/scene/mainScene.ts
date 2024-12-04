@@ -261,6 +261,7 @@ export default class MainScene extends Phaser.Scene {
   handleSantaDeath() {
     this.lives--;
     this.updateLives();
+    this.collectedGifts = 0;
 
     if (this.lives <= 0) {
       this.gameOver();
