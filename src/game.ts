@@ -5,6 +5,7 @@ import PreloadScene from './scene/preloadScene';
 import MenuScene from './scene/menuScene';
 import VideoScene from './scene/storyScene';
 import GameOverScene from './scene/gameOver';
+import FinishScene from './scene/finishScene';
 
 type scaleMode = 'FIT' | 'SMOOTH';
 
@@ -24,7 +25,7 @@ window.addEventListener('load', () => {
       width: DEFAULT_WIDTH,
       height: DEFAULT_HEIGHT
     },
-    scene: [PreloadScene, MenuScene, VideoScene, MainScene, GameOverScene],
+    scene: [PreloadScene, MenuScene, VideoScene, MainScene, GameOverScene, FinishScene],
     physics: {
       default: 'arcade',
       arcade: {

@@ -10,6 +10,8 @@ export default class MenuScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor('#EDEBFF');
     this.background = new MenuBackground(this);
     this.background.adjustPosition();
+    const music = this.sound.add('menu-audio');
+    music.play();
 
     const header = this.add.text(this.cameras.main.centerX, this.cameras.main.y + 120, '🎁 Lost Gift 🎁', {
       font: '128px Red Hat Display, sans-serif',
@@ -57,7 +59,7 @@ export default class MenuScene extends Phaser.Scene {
         duration: 200,
         yoyo: true,
         ease: 'Sine.easeInOut',
-        onComplete: () => this.startLevel(0),
+        onComplete: () => { this.startLevel(0), music.stop(); },
       });
     });
     this.add
@@ -78,7 +80,7 @@ export default class MenuScene extends Phaser.Scene {
         duration: 200,
         yoyo: true,
         ease: 'Sine.easeInOut',
-        onComplete: () => this.startLevel(1),
+        onComplete: () => { this.startLevel(1), music.stop(); },
       });
     });
     level2Button.setScale(0.5)
@@ -100,7 +102,7 @@ export default class MenuScene extends Phaser.Scene {
         duration: 200,
         yoyo: true,
         ease: 'Sine.easeInOut',
-        onComplete: () => this.startLevel(2),
+        onComplete: () => { this.startLevel(2), music.stop(); },
       });
     });
     level3Button.setScale(0.5)
