@@ -16,6 +16,7 @@ import LevelEnd from '../components/levelEnd';
 import DecorationsGroup from '../components/decorGroup';
 import Reindeer from '../components/reindeer';
 import LiftSprite from '../components/life';
+import Tips from '../components/tips';
 
 const TOTAL_LEVELS = 2;
 
@@ -35,6 +36,7 @@ export default class MainScene extends Phaser.Scene {
   totalGifts: number = 0;
   collectedGifts: number = 0;
   giftText: Phaser.GameObjects.Text;
+  tips: Tips;
 
   constructor() {
     super({
@@ -132,6 +134,8 @@ export default class MainScene extends Phaser.Scene {
       this,
       map.info.filter((el: TilesConfig) => el.type === 'gift')
     );
+    this.tips = new Tips(this);
+    this.tips.showTips();
 
     this.enemiesGroup = new EnemiesGroup(this, map.info);
 
@@ -196,7 +200,8 @@ export default class MainScene extends Phaser.Scene {
       this.controls.buttons.left,
       this.controls.buttons.right,
       this.giftText,
-      ...this.lifeSprites
+      ...this.lifeSprites,
+      this.tips.tipText
     ]);
     this.miniMap.update(this.santa);
 

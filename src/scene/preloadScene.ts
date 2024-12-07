@@ -31,6 +31,9 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('tree', 'assets/Tree_2.png');
     this.load.image('reindeer', 'assets/reindeer.png');
     this.load.image('finish-background', 'assets/finish.jpg');
+    this.load.image('a-button', 'assets/abutton.png');
+    this.load.image('d-button', 'assets/dbutton.png');
+    this.load.image('w-button', 'assets/wbutton.png');
 
     santaElementsWalk.forEach(img => {
       this.load.image(img, `assets/${img}.png`)
@@ -57,6 +60,6 @@ export default class PreloadScene extends Phaser.Scene {
   }
 
   create() {
-    this.scene.start('MenuScene')
+    this.scene.start('MainScene')
   }
 }

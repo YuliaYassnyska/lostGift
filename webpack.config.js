@@ -15,6 +15,9 @@ export default {
     resolve: {
         extensions: [".ts", ".js", ".json"]
     },
+    devServer: {
+        port: 3000,
+    },
     module: {
         rules: [
             {
