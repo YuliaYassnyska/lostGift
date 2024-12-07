@@ -1,24 +1,16 @@
-export default class MenuBackground extends Phaser.GameObjects.Image {
+export default class MenuBackground extends Phaser.GameObjects.TileSprite {
   constructor(scene) {
-    super(scene, 0, 0, 'menu-background');
+    super(scene, 0, 0, 0, 0, 'menu-background');
     scene.add.existing(this);
 
     this.setOrigin(0.5).setScrollFactor(0);
   }
 
   adjustPosition() {
-    const camera = this.scene.cameras.main;
-
-    const imgAspectRatio = this.width / this.height;
-    const screenAspectRatio = camera.width / camera.height;
-
-    if (screenAspectRatio > imgAspectRatio) {
-      this.setScale(camera.width / this.width);
-    } else {
-      this.setScale(camera.height / this.height);
-    }
-
-    this.x = camera.centerX;
-    this.y = camera.centerY;
+    const imgHeight = 800;
+    this.setScale(this.scene.cameras.main.height / imgHeight)
+    this.x = this.scene.cameras.main.centerX
+    this.y = this.scene.cameras.main.centerY
+    this.width = this.scene.cameras.main.width
   }
 }

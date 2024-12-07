@@ -138,11 +138,6 @@ export default class MenuScene extends Phaser.Scene {
         strokeThickness: 2
       })
       .setOrigin(0.5);
-
-
-    this.scale.on('resize', () => {
-      this.background.adjustPosition();
-    });
   }
 
   startLevel(level: number) {
