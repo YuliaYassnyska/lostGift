@@ -54,7 +54,7 @@ export default {
         }),
         new HtmlWebpackPlugin({
             template: "./index.html",
-            favicon: "./favicon.ico"
+            favicon: "./favicon.png"
         }),
         new CopyPlugin({
             patterns: [
