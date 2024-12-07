@@ -17,7 +17,7 @@ import DecorationsGroup from '../components/decorGroup';
 import Reindeer from '../components/reindeer';
 import LiftSprite from '../components/life';
 
-const TOTAL_LEVELS = 1;
+const TOTAL_LEVELS = 2;
 
 export default class MainScene extends Phaser.Scene {
   background: Background;

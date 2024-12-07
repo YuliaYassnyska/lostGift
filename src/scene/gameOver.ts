@@ -49,5 +49,17 @@ export default class GameOverScene extends Phaser.Scene {
       video.stop();
       this.scene.start('MenuScene');
     });
+
+    const resize = () => {
+      this.background.adjustPosition();
+    };
+
+    this.scale.on('resize', (gameSize: any) => {
+      this.cameras.main.width = gameSize.width;
+      this.cameras.main.height = gameSize.height;
+      resize();
+    });
+
+    resize();
   }
 }
