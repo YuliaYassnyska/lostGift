@@ -35,5 +35,7 @@ export default class Reindeer extends Phaser.Physics.Arcade.Sprite {
         blindEffect.destroy();
       },
     });
+
+    this.destroy();
   }
 }

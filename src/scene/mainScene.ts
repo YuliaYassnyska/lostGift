@@ -37,6 +37,7 @@ export default class MainScene extends Phaser.Scene {
   collectedGifts: number = 0;
   giftText: Phaser.GameObjects.Text;
   tips: Tips;
+  reindeers: Reindeer[];
 
   constructor() {
     super({
@@ -121,10 +122,9 @@ export default class MainScene extends Phaser.Scene {
     );
     this.levelEnd = new LevelEnd(this, map.info.filter((el: TilesConfig) => el.type === 'end')[0]);
     this.decorationsGroup = new DecorationsGroup(this, map.info);
-    const reindeerConfig = map.info.find((el: TilesConfig) => el.type === 'reindeer');
     this.lifeSprites = [];
     this.updateLives();
-    let reindeer: Reindeer | null = null;
+
     this.santa = new Santa(
       this,
       map.info.filter((el: TilesConfig) => el.type === 'santa')[0],
@@ -177,14 +177,21 @@ export default class MainScene extends Phaser.Scene {
         this.showMissingGiftsMessage();
       }
     })
-    if (reindeerConfig) {
-      reindeer = new Reindeer(this, reindeerConfig.x, reindeerConfig.y);
+    const reindeerConfigs = map.info.filter((el: TilesConfig) => el.type === 'reindeer');
+
+    this.reindeers = []; 
+
+    reindeerConfigs.forEach((config: TilesConfig) => {
+      const reindeer = new Reindeer(this, config.x, config.y);
+      this.reindeers.push(reindeer); 
+
       this.physics.add.overlap(this.santa, reindeer, (_, reindeer: Reindeer) => {
         reindeer.triggerMagicEffect();
-        reindeer.destroy();
       });
+
       this.physics.add.collider(this.tilesGroup, reindeer);
-    }
+    });
+
 
     this.miniMap = new MiniMap(
       this,
