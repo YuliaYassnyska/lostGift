@@ -38,6 +38,7 @@ export default class MainScene extends Phaser.Scene {
   giftText: Phaser.GameObjects.Text;
   tips: Tips;
   reindeers: Reindeer[];
+  music: Phaser.Sound.BaseSound;
 
   constructor() {
     super({
@@ -61,6 +62,8 @@ export default class MainScene extends Phaser.Scene {
     });
     this.giftText.setDepth(100);
     this.adjustGiftTextPosition();
+    this.music = this.sound.add('menu-audio');
+    this.music.play();
 
     this.cameras.main.setBackgroundColor('#ade6ff');
     this.cameras.main.fadeIn();
@@ -169,6 +172,7 @@ export default class MainScene extends Phaser.Scene {
         santa.halt()
         this.collectedGifts = 0;
         if (this.level === TOTAL_LEVELS) {
+          this.music.stop();
           this.scene.start('FinishScene');
         } else {
           levelEnd.nextLevel(this, this.level);
@@ -282,6 +286,7 @@ export default class MainScene extends Phaser.Scene {
     this.lives--;
     this.updateLives();
     this.collectedGifts = 0;
+    this.music.stop();
 
     if (this.lives <= 0) {
       this.gameOver();
