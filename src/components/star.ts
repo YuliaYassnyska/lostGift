@@ -46,7 +46,7 @@ export default class StarSprite extends EnemyClass {
     if (this.isFalling && !this.hitGround) {
       this.rotation += 0.05;
 
-      if (this.body.blocked.down) {
+      if (this.body && this.body.blocked.down) {
         this.hitGround = true;
         this.stopFalling();
       }
