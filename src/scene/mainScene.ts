@@ -137,7 +137,7 @@ export default class MainScene extends Phaser.Scene {
     this.tips = new Tips(this);
     this.tips.showTips();
 
-    this.enemiesGroup = new EnemiesGroup(this, map.info);
+    this.enemiesGroup = new EnemiesGroup(this, map.info, this.santa);
 
     this.cameras.main.startFollow(this.santa);
 
