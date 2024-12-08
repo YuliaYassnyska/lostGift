@@ -15,6 +15,9 @@ export default {
     resolve: {
         extensions: [".ts", ".js", ".json"]
     },
+    devServer: {
+        port: 3000,
+    },
     module: {
         rules: [
             {
@@ -54,7 +57,7 @@ export default {
         }),
         new HtmlWebpackPlugin({
             template: "./index.html",
-            favicon: "./favicon.ico"
+            favicon: "./favicon.png"
         }),
         new CopyPlugin({
             patterns: [

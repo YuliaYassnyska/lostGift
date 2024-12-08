@@ -1,7 +1,7 @@
 import { TilesConfig } from '../types/types';
 
 export default class GiftSingle extends Phaser.Physics.Arcade.Sprite {
-  private collecting: boolean = false
+  collecting: boolean = false
 
   constructor(scene: Phaser.Scene, config: TilesConfig) {
     super(scene, config.x + 48, config.y + 48, config.texture)
@@ -9,7 +9,7 @@ export default class GiftSingle extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this)
 
     this.setImmovable();
-    this.setScale(0.15);
+    this.setScale(0.3);
     (this.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 
     this.scene.tweens.add({

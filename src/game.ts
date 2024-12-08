@@ -2,6 +2,10 @@ import 'phaser';
 
 import MainScene from './scene/mainScene';
 import PreloadScene from './scene/preloadScene';
+import MenuScene from './scene/menuScene';
+import VideoScene from './scene/storyScene';
+import GameOverScene from './scene/gameOver';
+import FinishScene from './scene/finishScene';
 
 type scaleMode = 'FIT' | 'SMOOTH';
 
@@ -21,7 +25,7 @@ window.addEventListener('load', () => {
       width: DEFAULT_WIDTH,
       height: DEFAULT_HEIGHT
     },
-    scene: [PreloadScene, MainScene],
+    scene: [PreloadScene, MenuScene, VideoScene, MainScene, GameOverScene, FinishScene],
     physics: {
       default: 'arcade',
       arcade: {
@@ -71,7 +75,6 @@ window.addEventListener('load', () => {
     game.canvas.style.width = newWidth * scale + 'px'
     game.canvas.style.height = newHeight * scale + 'px'
 
-    // center the game with css margin
     game.canvas.style.marginTop = `${(h - newHeight * scale) / 2}px`
     game.canvas.style.marginLeft = `${(w - newWidth * scale) / 2}px`
   }

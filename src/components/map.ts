@@ -53,17 +53,57 @@ export default class Map {
         type: 'gift',
         texture: 'gift',
       },
-      //   O: {
-      //     type: 'coin',
-      //     texture: 'coin'
-      //   },
-      //   B: {
-      //     type: 'enemy',
-      //     texture: 'bee'
-      //   },
+      T: {
+        type: 'enemy',
+        texture: 'tank'
+      },
+      M: {
+        type: 'enemy',
+        texture: 'snowman',
+      },
       S: {
         type: 'santa',
         texture: 'santa',
+      },
+      C: {
+        type: 'decor',
+        texture: 'crystal',
+      },
+      I: {
+        type: 'decor',
+        texture: 'sign-2',
+      },
+      '3': {
+        type: 'decor',
+        texture: 'sign-1',
+      },
+      '4': {
+        type: 'decor',
+        texture: 'stone',
+      },
+      '5': {
+        type: 'decor',
+        texture: 'tree-group',
+      },
+      '6': {
+        type: 'decor',
+        texture: 'tree',
+      },
+      E: {
+        type: 'end',
+        texture: 'end',
+      },
+      R: {
+        type: 'reindeer',
+        texture: 'reindeer',
+      },
+      B: {
+        type: 'enemy',
+        texture: 'fly-enemy',
+      },
+      A: {
+        type: 'enemy',
+        texture: 'star',
       },
     };
 

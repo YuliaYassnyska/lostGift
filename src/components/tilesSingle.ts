@@ -3,6 +3,7 @@ export default class TilesSingle extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, texture)
 
     this.setOrigin(0, 0)
+    this.setScale(0.75)
 
     scene.add.existing(this)
     scene.physics.add.existing(this, true)
