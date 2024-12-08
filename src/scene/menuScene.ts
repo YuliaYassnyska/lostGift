@@ -125,7 +125,7 @@ export default class MenuScene extends Phaser.Scene {
         duration: 200,
         yoyo: true,
         ease: 'Sine.easeInOut',
-        onComplete: () => this.scene.start('VideoScene'),
+        onComplete: () => { this.scene.start('VideoScene'); music.stop(); },
       });
     });
     story.setScale(0.5)
