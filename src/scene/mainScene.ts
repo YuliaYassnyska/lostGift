@@ -130,12 +130,12 @@ export default class MainScene extends Phaser.Scene {
       map.info.filter((el: TilesConfig) => el.type === 'santa')[0],
       map.size
     );
+    this.tips = new Tips(this);
+    this.tips.showTips();
     const giftGroup = new GiftGroup(
       this,
       map.info.filter((el: TilesConfig) => el.type === 'gift')
     );
-    this.tips = new Tips(this);
-    this.tips.showTips();
 
     this.enemiesGroup = new EnemiesGroup(this, map.info, this.santa);
 
@@ -191,7 +191,7 @@ export default class MainScene extends Phaser.Scene {
       10,
       10,
       Math.min(map.size.width / 8, (map.size.height / 8) * 2.5),
-      map.size.height / 8,
+      this.level === 2 ? map.size.height / 16 : map.size.height / 8,
       map
     );
     this.miniMap.setIgnore([
@@ -201,7 +201,8 @@ export default class MainScene extends Phaser.Scene {
       this.controls.buttons.right,
       this.giftText,
       ...this.lifeSprites,
-      this.tips.tipText
+      this.tips.tipText,
+      this.tips.controlsImages
     ]);
     this.miniMap.update(this.santa);
 

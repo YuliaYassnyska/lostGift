@@ -2,7 +2,7 @@ export default class Tips extends Phaser.GameObjects.GameObject {
   tipText: Phaser.GameObjects.Text;
   private tipIndex: number;
   private tips: string[];
-  private controlsImages: Phaser.GameObjects.Image[];
+  controlsImages: Phaser.GameObjects.Image[];
   changeTipInterval: Phaser.Time.TimerEvent;
 
   constructor(scene: Phaser.Scene) {
@@ -14,20 +14,26 @@ export default class Tips extends Phaser.GameObjects.GameObject {
       'Збери усі подарунки, щоб завершити рівень 🎁',
       'У тебе є всього лиш 3 💙 життя на всі рівні',
       'Уникай ворогів ☃️ 🐣 🚖 та перешкоди ⭐️',
+      'Остерігайся оленів, вони можуть тебе осліпити 🦌',
+      'Більше терпіння та удачі 🍀',
       'Нажми Enter, щоб пропустити підказки',
     ];
     this.controlsImages = [];
     this.checkAndShowControls();
     this.changeTipInterval = scene.time.addEvent({
-      delay: 5000,
+      delay: 3000,
       callback: this.changeTip,
       callbackScope: this,
       loop: true,
     });
 
     this.scene.input.keyboard.on('keydown-ENTER', () => {
-      this.tipText.destroy();
-      this.controlsImages.forEach((image) => image.destroy());
+      if (this.tipText) {
+        this.tipText.destroy();
+      }
+      if (this.controlsImages.length > 0) {
+        this.controlsImages.forEach((image) => image.destroy());
+      }
     });
   }
 
@@ -41,8 +47,8 @@ export default class Tips extends Phaser.GameObjects.GameObject {
           strokeThickness: 8,
           align: 'center',
         })
-        .setOrigin(0.5);
-    } else {
+        .setOrigin(0.5).setDepth(100);
+    } else if (this.tipText) {
       this.tipText.setText(this.tips[this.tipIndex]);
     }
 
@@ -58,9 +64,11 @@ export default class Tips extends Phaser.GameObjects.GameObject {
   }
 
   changeTip() {
-    this.tipIndex = (this.tipIndex + 1) % this.tips.length;
-    this.tipText.setText(this.tips[this.tipIndex]);
-    this.checkAndShowControls();
+    if (!this.tipText) {
+      this.tipIndex = (this.tipIndex + 1) % this.tips.length;
+      this.tipText.setText(this.tips[this.tipIndex]);
+      this.checkAndShowControls();
+    }
   }
 
   clearControls() {
