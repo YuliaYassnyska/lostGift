@@ -30,11 +30,17 @@ export default class Tips extends Phaser.GameObjects.GameObject {
     this.scene.input.keyboard.on('keydown-ENTER', () => {
       if (this.tipText) {
         this.tipText.destroy();
+        this.tipText = null;
       }
       if (this.controlsImages.length > 0) {
         this.controlsImages.forEach((image) => image.destroy());
+        this.controlsImages = [];
+      }
+      if (this.changeTipInterval) {
+        this.changeTipInterval.remove(); // Stop the timer
       }
     });
+    
   }
 
   showTips() {
@@ -64,12 +70,17 @@ export default class Tips extends Phaser.GameObjects.GameObject {
   }
 
   changeTip() {
-    if (!this.tipText) {
-      this.tipIndex = (this.tipIndex + 1) % this.tips.length;
+    this.tipIndex = (this.tipIndex + 1) % this.tips.length;
+  
+    if (this.tipText) {
       this.tipText.setText(this.tips[this.tipIndex]);
-      this.checkAndShowControls();
+    } else {
+      this.showTips();
     }
+  
+    this.checkAndShowControls();
   }
+  
 
   clearControls() {
     this.controlsImages.forEach((control) => control.destroy());
