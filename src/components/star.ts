@@ -18,7 +18,7 @@ export default class StarSprite extends EnemyClass {
 
     this.santa = santa;
     this.setOrigin(0.5, 1);
-    this.setScale(0.3);
+    this.setScale(0.2);
     this.body.setSize(this.width - 40, this.height - 20);
     this.body.setOffset(20, 20);
 
@@ -35,7 +35,7 @@ export default class StarSprite extends EnemyClass {
     ) {
       if (this.fallDelay === null) {
         this.fallDelay = this.scene.time.delayedCall(
-          500,
+          300,
           this.startFalling,
           [],
           this
@@ -76,8 +76,5 @@ export default class StarSprite extends EnemyClass {
   }
 
   kill() {
-    if (this.dead) return;
-    this.setFrame(10);
-    this.removeEnemy();
   }
 }

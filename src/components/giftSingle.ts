@@ -9,7 +9,7 @@ export default class GiftSingle extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this)
 
     this.setImmovable();
-    this.setScale(0.15);
+    this.setScale(0.3);
     (this.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 
     this.scene.tweens.add({

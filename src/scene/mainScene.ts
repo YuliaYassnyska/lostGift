@@ -52,7 +52,7 @@ export default class MainScene extends Phaser.Scene {
   create() {
     const map = new Map(this.level);
     this.totalGifts = map.info.filter((el: TilesConfig) => el.type === 'gift').length;
-    this.giftText = this.add.text(0, 0, `Подарунки: ${this.collectedGifts} / ${this.totalGifts}`, {
+    this.giftText = this.add.text(0, 0, `🎁 : ${this.collectedGifts} / ${this.totalGifts}`, {
       font: '30px Red Hat Display, sans-serif',
       color: '#7BD3EA',
       stroke: '#fff',
@@ -255,7 +255,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   updateGiftText() {
-    this.giftText.setText(`Подарунки: ${this.collectedGifts} / ${this.totalGifts}`);
+    this.giftText.setText(`🎁 : ${this.collectedGifts} / ${this.totalGifts}`);
   }
 
   showMissingGiftsMessage() {
