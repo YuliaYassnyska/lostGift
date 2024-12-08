@@ -251,6 +251,7 @@ export default class MainScene extends Phaser.Scene {
     for (let i = 0; i < this.lives; i++) {
       const offset = i * 50;
       const lifeSprite = new LiftSprite(this, 0, 0, offset);
+      lifeSprite.setDepth(101);
       this.lifeSprites.push(lifeSprite);
     }
   }
