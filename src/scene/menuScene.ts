@@ -138,6 +138,29 @@ export default class MenuScene extends Phaser.Scene {
         strokeThickness: 2
       })
       .setOrigin(0.5);
+
+    const enemies = this.add.sprite(centerX, centerY + buttonSpacing + buttonSpacing + buttonSpacing, 'button').setInteractive();
+    enemies.on('pointerdown', () => {
+      this.tweens.add({
+        targets: enemies,
+        scaleX: 0.45,
+        scaleY: 0.45,
+        duration: 200,
+        yoyo: true,
+        ease: 'Sine.easeInOut',
+        onComplete: () => { this.scene.start('EnemiesScene'); music.stop(); },
+      });
+    });
+    enemies.setScale(0.5)
+
+    this.add
+      .text(enemies.x, enemies.y - 5, 'Enemies', {
+        fontSize: '36px',
+        color: '#BFECFF',
+        stroke: '#fff',
+        strokeThickness: 2
+      })
+      .setOrigin(0.5);
   }
 
   startLevel(level: number) {

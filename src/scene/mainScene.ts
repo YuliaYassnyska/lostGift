@@ -62,7 +62,7 @@ export default class MainScene extends Phaser.Scene {
     });
     this.giftText.setDepth(100);
     this.adjustGiftTextPosition();
-    this.music = this.sound.add('menu-audio');
+    this.music = this.sound.add('game-audio');
     this.music.play();
 
     this.cameras.main.setBackgroundColor('#ade6ff');
@@ -296,6 +296,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   gameOver() {
+    this.music.stop();
     this.updateLives(true);
     this.scene.start('GameOverScene');
   }
