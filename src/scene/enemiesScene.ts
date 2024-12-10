@@ -72,7 +72,8 @@ export default class EnemiesScene extends Phaser.Scene {
         .sprite(0, -100, enemy.spriteKey)
         .setScale(
           (enemy.spriteKey === 'bird-1' && 0.2) ||
-            (enemy.spriteKey === 'reindeer' && 0.15) || (enemy.spriteKey === 'star' && 0.5) ||
+            (enemy.spriteKey === 'reindeer' && 0.15) ||
+            (enemy.spriteKey === 'star' && 0.5) ||
             1
         );
       const name = this.add
@@ -161,6 +162,19 @@ export default class EnemiesScene extends Phaser.Scene {
         wordWrap: { width: 200, useAdvancedWrap: true },
       })
       .setOrigin(0.5);
+
+    this.input.keyboard.on('keydown-ENTER', () => {
+      music.stop();
+      this.scene.start('MenuScene');
+    });
+
+    this.input.keyboard.on('keydown-RIGHT', () => {
+      this.changeSlide(1);
+    });
+
+    this.input.keyboard.on('keydown-LEFT', () => {
+      this.changeSlide(-1);
+    });
   }
 
   changeSlide(direction: number) {
