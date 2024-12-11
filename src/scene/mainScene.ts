@@ -123,6 +123,35 @@ export default class MainScene extends Phaser.Scene {
       this,
       map.info.filter((el: TilesConfig) => el.type === 'tile')
     );
+
+    const backButton = this.add
+      .sprite(150, this.cameras.main.height - 50, 'button')
+      .setInteractive();
+    backButton.setScale(0.5).setScrollFactor(0).setDepth(100);
+    backButton.on('pointerdown', () => {
+      this.tweens.add({
+        targets: backButton,
+        scaleX: 0.45,
+        scaleY: 0.45,
+        duration: 200,
+        yoyo: true,
+        ease: 'Sine.easeInOut',
+        onComplete: () => {
+          this.scene.start('MenuScene');
+          this.music.stop();
+        },
+      });
+    });
+
+    const menuText = this.add
+      .text(backButton.x, backButton.y - 5, '⬅ Меню', {
+        fontSize: '36px',
+        color: '#BFECFF',
+        stroke: '#fff',
+        strokeThickness: 2,
+      })
+      .setOrigin(0.5).setDepth(100).setScrollFactor(0);
+
     this.levelEnd = new LevelEnd(this, map.info.filter((el: TilesConfig) => el.type === 'end')[0]);
     this.decorationsGroup = new DecorationsGroup(this, map.info);
     this.lifeSprites = [];
@@ -175,6 +204,7 @@ export default class MainScene extends Phaser.Scene {
           this.music.stop();
           this.scene.start('FinishScene');
         } else {
+          this.music.stop();
           levelEnd.nextLevel(this, this.level);
         }
       } else {
@@ -213,7 +243,9 @@ export default class MainScene extends Phaser.Scene {
       this.giftText,
       ...this.lifeSprites,
       this.tips.tipText,
-      this.tips.controlsImages
+      this.tips.controlsImages,
+      backButton,
+      menuText
     ]);
     this.miniMap.update(this.santa);
 

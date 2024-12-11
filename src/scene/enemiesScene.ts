@@ -3,9 +3,7 @@ import EnemiesBackground from '../components/enemiesBackground';
 export default class EnemiesScene extends Phaser.Scene {
   currentSlideIndex: number;
   slides: Phaser.GameObjects.Container[];
-  leftArrow: Phaser.GameObjects.Image;
-  rightArrow: Phaser.GameObjects.Image;
-  background: EnemiesBackground;
+  background!: EnemiesBackground;
 
   constructor() {
     super('EnemiesScene');
@@ -14,9 +12,18 @@ export default class EnemiesScene extends Phaser.Scene {
   }
 
   create() {
+    this.setupScene();
+    this.createEnemiesSlides();
+    this.createNavigationButtons();
+    this.createBackButton();
+    this.setupKeyboardInput();
+  }
+
+  setupScene() {
     this.cameras.main.setBackgroundColor('#EDEBFF');
     this.background = new EnemiesBackground(this);
     this.background.adjustPosition();
+
     const music = this.sound.add('menu-audio');
     music.play();
 
@@ -28,7 +35,9 @@ export default class EnemiesScene extends Phaser.Scene {
         strokeThickness: 8,
       })
       .setOrigin(0.5);
+  }
 
+  createEnemiesSlides() {
     const centerX = this.cameras.main.centerX;
     const centerY = this.cameras.main.centerY;
 
@@ -65,17 +74,15 @@ export default class EnemiesScene extends Phaser.Scene {
       },
     ];
 
+    this.slides.forEach((slide) => slide.destroy());
+    this.slides = [];
+
     enemies.forEach((enemy) => {
       const container = this.add.container(centerX, centerY).setVisible(false);
 
       const sprite = this.add
         .sprite(0, -100, enemy.spriteKey)
-        .setScale(
-          (enemy.spriteKey === 'bird-1' && 0.2) ||
-            (enemy.spriteKey === 'reindeer' && 0.15) ||
-            (enemy.spriteKey === 'star' && 0.5) ||
-            1
-        );
+        .setScale(this.getEnemyScale(enemy.spriteKey));
       const name = this.add
         .text(0, 50, enemy.name, {
           fontSize: '48px',
@@ -101,56 +108,56 @@ export default class EnemiesScene extends Phaser.Scene {
 
     this.slides[0].setVisible(true);
 
-    this.leftArrow = this.add
+    console.log(this.slides.length);
+  }
+
+  getEnemyScale(spriteKey: string): number {
+    const scales = {
+      'bird-1': 0.2,
+      reindeer: 0.15,
+      star: 0.5,
+    };
+    return scales[spriteKey] || 1;
+  }
+
+  createNavigationButtons() {
+    const centerX = this.cameras.main.centerX;
+    const centerY = this.cameras.main.centerY;
+
+    const leftArrow = this.add
       .image(centerX - 500, centerY, 'arrow')
-      .setInteractive();
-    this.leftArrow.setScale(0.2).setFlipX(true);
-    this.leftArrow.on('pointerdown', () =>
-      this.tweens.add({
-        targets: this.leftArrow,
-        scaleX: 0.45,
-        scaleY: 0.45,
-        duration: 200,
-        yoyo: true,
-        ease: 'Sine.easeInOut',
-        onComplete: () => this.changeSlide(-1),
-      })
-    );
+      .setInteractive()
+      .setScale(0.2)
+      .setFlipX(true)
+      .on('pointerdown', () => this.animateButton(leftArrow, -1));
 
-    this.rightArrow = this.add
+    const rightArrow = this.add
       .image(centerX + 500, centerY, 'arrow')
-      .setInteractive();
-    this.rightArrow.setScale(0.2);
-    this.rightArrow.on('pointerdown', () =>
-      this.tweens.add({
-        targets: this.rightArrow,
-        scaleX: 0.45,
-        scaleY: 0.45,
-        duration: 200,
-        yoyo: true,
-        ease: 'Sine.easeInOut',
-        onComplete: () => this.changeSlide(1),
-      })
-    );
+      .setInteractive()
+      .setScale(0.2)
+      .on('pointerdown', () => this.animateButton(rightArrow, 1));
+  }
 
+  createBackButton() {
+    const centerX = this.cameras.main.centerX;
     const backButton = this.add
       .sprite(centerX, this.cameras.main.height - 100, 'button')
-      .setInteractive();
-    backButton.setScale(0.6);
-    backButton.on('pointerdown', () => {
-      this.tweens.add({
-        targets: backButton,
-        scaleX: 0.45,
-        scaleY: 0.45,
-        duration: 200,
-        yoyo: true,
-        ease: 'Sine.easeInOut',
-        onComplete: () => {
-          music.stop();
-          this.scene.start('MenuScene');
-        },
+      .setInteractive()
+      .setScale(0.6)
+      .on('pointerdown', () => {
+        this.tweens.add({
+          targets: backButton,
+          scaleX: 0.45,
+          scaleY: 0.45,
+          duration: 200,
+          yoyo: true,
+          ease: 'Sine.easeInOut',
+          onComplete: () => {
+            this.sound.stopAll();
+            this.scene.start('MenuScene');
+          },
+        });
       });
-    });
 
     this.add
       .text(backButton.x, backButton.y - 5, 'Повернутись в меню', {
@@ -162,9 +169,11 @@ export default class EnemiesScene extends Phaser.Scene {
         wordWrap: { width: 200, useAdvancedWrap: true },
       })
       .setOrigin(0.5);
+  }
 
+  setupKeyboardInput() {
     this.input.keyboard.on('keydown-ENTER', () => {
-      music.stop();
+      this.sound.stopAll();
       this.scene.start('MenuScene');
     });
 
@@ -177,15 +186,25 @@ export default class EnemiesScene extends Phaser.Scene {
     });
   }
 
+  animateButton(button: Phaser.GameObjects.Image, direction: number) {
+    this.tweens.add({
+      targets: button,
+      scaleX: 0.45,
+      scaleY: 0.45,
+      duration: 200,
+      yoyo: true,
+      ease: 'Sine.easeInOut',
+      onComplete: () => this.changeSlide(direction),
+    });
+  }
+
   changeSlide(direction: number) {
     this.slides[this.currentSlideIndex].setVisible(false);
-
     this.currentSlideIndex = Phaser.Math.Wrap(
       this.currentSlideIndex + direction,
       0,
       this.slides.length
     );
-
     this.slides[this.currentSlideIndex].setVisible(true);
   }
 }

@@ -18,7 +18,7 @@ export default class MenuScene extends Phaser.Scene {
       // @ts-ignore
       fill: 'rgba(22, 119, 255, 0.32)',
       stroke: '#fff',
-      strokeThickness: 3
+      strokeThickness: 8
     });
 
     const gradient = header.context.createLinearGradient(
@@ -49,74 +49,34 @@ export default class MenuScene extends Phaser.Scene {
     const centerX = this.cameras.main.centerX;
     const centerY = this.cameras.main.centerY;
 
-    const level1Button = this.add.sprite(centerX, centerY - buttonSpacing, 'button').setInteractive();
-    level1Button.setScale(0.5)
-    level1Button.on('pointerdown', () => {
+    const levelsButton = this.add.sprite(centerX, centerY - buttonSpacing, 'button').setInteractive();
+    levelsButton.setScale(0.5);
+    levelsButton.on('pointerdown', () => {
       this.tweens.add({
-        targets: level1Button,
+        targets: levelsButton,
         scaleX: 0.45,
         scaleY: 0.45,
         duration: 200,
         yoyo: true,
         ease: 'Sine.easeInOut',
-        onComplete: () => { this.startLevel(0), music.stop(); },
+        onComplete: () => {
+          this.scene.start('LevelsScene');
+          music.stop();
+        },
       });
     });
+
     this.add
-      .text(level1Button.x, level1Button.y - 5, 'Level 1', {
+      .text(levelsButton.x, levelsButton.y - 5, 'Почати', {
         fontSize: '36px',
         color: '#BFECFF',
         stroke: '#fff',
-        strokeThickness: 2
+        strokeThickness: 2,
       })
       .setOrigin(0.5);
 
-    const level2Button = this.add.sprite(centerX, centerY, 'button').setInteractive();
-    level2Button.on('pointerdown', () => {
-      this.tweens.add({
-        targets: level2Button,
-        scaleX: 0.45,
-        scaleY: 0.45,
-        duration: 200,
-        yoyo: true,
-        ease: 'Sine.easeInOut',
-        onComplete: () => { this.startLevel(1), music.stop(); },
-      });
-    });
-    level2Button.setScale(0.5)
 
-    this.add
-      .text(level2Button.x, level2Button.y - 5, 'Level 2', {
-        fontSize: '36px',
-        color: '#BFECFF',
-        stroke: '#fff',
-        strokeThickness: 2
-      })
-      .setOrigin(0.5);
-    const level3Button = this.add.sprite(centerX, centerY + buttonSpacing, 'button').setInteractive();
-    level3Button.on('pointerdown', () => {
-      this.tweens.add({
-        targets: level3Button,
-        scaleX: 0.45,
-        scaleY: 0.45,
-        duration: 200,
-        yoyo: true,
-        ease: 'Sine.easeInOut',
-        onComplete: () => { this.startLevel(2), music.stop(); },
-      });
-    });
-    level3Button.setScale(0.5)
-
-    this.add
-      .text(level3Button.x, level3Button.y - 5, 'Level 3', {
-        fontSize: '36px',
-        color: '#BFECFF',
-        stroke: '#fff',
-        strokeThickness: 2
-      })
-      .setOrigin(0.5);
-
-    const story = this.add.sprite(centerX, centerY + buttonSpacing + buttonSpacing, 'button').setInteractive();
+    const story = this.add.sprite(centerX, centerY, 'button').setInteractive();
     story.on('pointerdown', () => {
       this.tweens.add({
         targets: story,
@@ -131,7 +91,7 @@ export default class MenuScene extends Phaser.Scene {
     story.setScale(0.5)
 
     this.add
-      .text(story.x, story.y - 5, 'Game story', {
+      .text(story.x, story.y - 5, 'Передісторія', {
         fontSize: '36px',
         color: '#BFECFF',
         stroke: '#fff',
@@ -139,7 +99,7 @@ export default class MenuScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    const enemies = this.add.sprite(centerX, centerY + buttonSpacing + buttonSpacing + buttonSpacing, 'button').setInteractive();
+    const enemies = this.add.sprite(centerX, centerY + buttonSpacing, 'button').setInteractive();
     enemies.on('pointerdown', () => {
       this.tweens.add({
         targets: enemies,
@@ -154,7 +114,7 @@ export default class MenuScene extends Phaser.Scene {
     enemies.setScale(0.5)
 
     this.add
-      .text(enemies.x, enemies.y - 5, 'Enemies', {
+      .text(enemies.x, enemies.y - 5, 'Вороги', {
         fontSize: '36px',
         color: '#BFECFF',
         stroke: '#fff',
