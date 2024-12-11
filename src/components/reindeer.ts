@@ -26,6 +26,19 @@ export default class Reindeer extends Phaser.Physics.Arcade.Sprite {
     blindEffect.setScrollFactor(0);
     blindEffect.setDepth(1000);
 
+    const messageText = this.scene.add.text(
+      this.scene.cameras.main.centerX,
+      this.scene.cameras.main.centerY,
+      'Ну ти і олень)))',
+      {
+        font: '48px Arial',
+        color: '#ffffff',
+        stroke: '#000',
+        strokeThickness: 4,
+      }
+    );
+    messageText.setOrigin(0.5).setDepth(1001);
+
     this.scene.tweens.add({
       targets: blindEffect,
       alpha: 0,
@@ -33,6 +46,7 @@ export default class Reindeer extends Phaser.Physics.Arcade.Sprite {
       delay: 3000,
       onComplete: () => {
         blindEffect.destroy();
+        messageText.destroy(); 
       },
     });
 

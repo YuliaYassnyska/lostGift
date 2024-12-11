@@ -91,7 +91,6 @@ export default class MainScene extends Phaser.Scene {
       space: Phaser.Input.Keyboard.KeyCodes.SPACE,
     };
 
-    // Use key bindings to set up controls
     this.cursors = this.input.keyboard.addKeys({
       left: this.keyBindings.left,
       up: this.keyBindings.up,
