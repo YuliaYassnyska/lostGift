@@ -143,7 +143,7 @@ export default class EnemiesScene extends Phaser.Scene {
     const backButton = this.add
       .sprite(centerX, this.cameras.main.height - 100, 'button')
       .setInteractive()
-      .setScale(0.6)
+      .setScale(0.5)
       .on('pointerdown', () => {
         this.tweens.add({
           targets: backButton,
@@ -160,7 +160,7 @@ export default class EnemiesScene extends Phaser.Scene {
       });
 
     this.add
-      .text(backButton.x, backButton.y - 5, 'Повернутись в меню', {
+      .text(backButton.x, backButton.y - 5, '⬅ Mеню', {
         fontSize: '36px',
         color: '#BFECFF',
         stroke: '#fff',

@@ -121,6 +121,29 @@ export default class MenuScene extends Phaser.Scene {
         strokeThickness: 2
       })
       .setOrigin(0.5);
+
+    const settings = this.add.sprite(centerX, centerY + buttonSpacing + buttonSpacing, 'button').setInteractive();
+    settings.on('pointerdown', () => {
+      this.tweens.add({
+        targets: settings,
+        scaleX: 0.45,
+        scaleY: 0.45,
+        duration: 200,
+        yoyo: true,
+        ease: 'Sine.easeInOut',
+        onComplete: () => { this.scene.start('SettingsScene'); music.stop(); },
+      });
+    });
+    settings.setScale(0.5)
+
+    this.add
+      .text(settings.x, settings.y - 5, 'Налаштування', {
+        fontSize: '36px',
+        color: '#BFECFF',
+        stroke: '#fff',
+        strokeThickness: 2
+      })
+      .setOrigin(0.5);
   }
 
   startLevel(level: number) {

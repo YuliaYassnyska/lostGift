@@ -39,6 +39,7 @@ export default class MainScene extends Phaser.Scene {
   tips: Tips;
   reindeers: Reindeer[];
   music: Phaser.Sound.BaseSound;
+  keyBindings: any;
 
   constructor() {
     super({
@@ -83,12 +84,21 @@ export default class MainScene extends Phaser.Scene {
 
     this.input.addPointer(1);
 
-    this.cursors = this.input.keyboard.addKeys({
+    this.keyBindings = this.registry.get('keyBindings') || {
       left: Phaser.Input.Keyboard.KeyCodes.A,
       up: Phaser.Input.Keyboard.KeyCodes.W,
       right: Phaser.Input.Keyboard.KeyCodes.D,
       space: Phaser.Input.Keyboard.KeyCodes.SPACE,
+    };
+
+    // Use key bindings to set up controls
+    this.cursors = this.input.keyboard.addKeys({
+      left: this.keyBindings.left,
+      up: this.keyBindings.up,
+      right: this.keyBindings.right,
+      space: this.keyBindings.space,
     });
+
 
     this.anims.create({
       key: 'walk',

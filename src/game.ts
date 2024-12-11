@@ -8,6 +8,7 @@ import GameOverScene from './scene/gameOver';
 import FinishScene from './scene/finishScene';
 import EnemiesScene from './scene/enemiesScene';
 import LevelsScene from './scene/levesScene';
+import SettingsScene from './scene/settingsScene';
 
 type scaleMode = 'FIT' | 'SMOOTH';
 
@@ -36,6 +37,7 @@ window.addEventListener('load', () => {
       FinishScene,
       EnemiesScene,
       LevelsScene,
+      SettingsScene,
     ],
     physics: {
       default: 'arcade',
