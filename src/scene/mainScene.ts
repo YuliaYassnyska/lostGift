@@ -38,6 +38,8 @@ export default class MainScene extends Phaser.Scene {
   giftText: Phaser.GameObjects.Text;
   tips: Tips;
   reindeers: Reindeer[];
+  music: Phaser.Sound.BaseSound;
+  keyBindings: any;
 
   constructor() {
     super({
@@ -61,6 +63,8 @@ export default class MainScene extends Phaser.Scene {
     });
     this.giftText.setDepth(100);
     this.adjustGiftTextPosition();
+    this.music = this.sound.add('game-audio');
+    this.music.play();
 
     this.cameras.main.setBackgroundColor('#ade6ff');
     this.cameras.main.fadeIn();
@@ -80,12 +84,20 @@ export default class MainScene extends Phaser.Scene {
 
     this.input.addPointer(1);
 
-    this.cursors = this.input.keyboard.addKeys({
+    this.keyBindings = this.registry.get('keyBindings') || {
       left: Phaser.Input.Keyboard.KeyCodes.A,
       up: Phaser.Input.Keyboard.KeyCodes.W,
       right: Phaser.Input.Keyboard.KeyCodes.D,
       space: Phaser.Input.Keyboard.KeyCodes.SPACE,
+    };
+
+    this.cursors = this.input.keyboard.addKeys({
+      left: this.keyBindings.left,
+      up: this.keyBindings.up,
+      right: this.keyBindings.right,
+      space: this.keyBindings.space,
     });
+
 
     this.anims.create({
       key: 'walk',
@@ -120,6 +132,35 @@ export default class MainScene extends Phaser.Scene {
       this,
       map.info.filter((el: TilesConfig) => el.type === 'tile')
     );
+
+    const backButton = this.add
+      .sprite(150, this.cameras.main.height - 50, 'button')
+      .setInteractive();
+    backButton.setScale(0.5).setScrollFactor(0).setDepth(100);
+    backButton.on('pointerdown', () => {
+      this.tweens.add({
+        targets: backButton,
+        scaleX: 0.45,
+        scaleY: 0.45,
+        duration: 200,
+        yoyo: true,
+        ease: 'Sine.easeInOut',
+        onComplete: () => {
+          this.scene.start('MenuScene');
+          this.music.stop();
+        },
+      });
+    });
+
+    const menuText = this.add
+      .text(backButton.x, backButton.y - 5, '⬅ Меню', {
+        fontSize: '36px',
+        color: '#BFECFF',
+        stroke: '#fff',
+        strokeThickness: 2,
+      })
+      .setOrigin(0.5).setDepth(100).setScrollFactor(0);
+
     this.levelEnd = new LevelEnd(this, map.info.filter((el: TilesConfig) => el.type === 'end')[0]);
     this.decorationsGroup = new DecorationsGroup(this, map.info);
     this.lifeSprites = [];
@@ -169,8 +210,10 @@ export default class MainScene extends Phaser.Scene {
         santa.halt()
         this.collectedGifts = 0;
         if (this.level === TOTAL_LEVELS) {
+          this.music.stop();
           this.scene.start('FinishScene');
         } else {
+          this.music.stop();
           levelEnd.nextLevel(this, this.level);
         }
       } else {
@@ -209,7 +252,9 @@ export default class MainScene extends Phaser.Scene {
       this.giftText,
       ...this.lifeSprites,
       this.tips.tipText,
-      this.tips.controlsImages
+      this.tips.controlsImages,
+      backButton,
+      menuText
     ]);
     this.miniMap.update(this.santa);
 
@@ -282,6 +327,7 @@ export default class MainScene extends Phaser.Scene {
     this.lives--;
     this.updateLives();
     this.collectedGifts = 0;
+    this.music.stop();
 
     if (this.lives <= 0) {
       this.gameOver();
@@ -291,6 +337,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   gameOver() {
+    this.music.stop();
     this.updateLives(true);
     this.scene.start('GameOverScene');
   }

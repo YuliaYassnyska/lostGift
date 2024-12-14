@@ -11,6 +11,7 @@ export default class PreloadScene extends Phaser.Scene {
   preload() {
     this.load.image('end', 'assets/home.png');
     this.load.image('game-over-background', 'assets/game-over-background.jpg');
+    this.load.image('enemies-background', 'assets/enemies-back.jpg');
     const mapElements = ['1', '2', '3', '4', '5', '6', '14', '15', '16',];
     mapElements.forEach(img => {
       this.load.image(img, `assets/${img}.png`);
@@ -23,6 +24,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.audio('game-over-audio', 'assets/game-over-audio.mp3');
     this.load.audio('menu-audio', 'assets/menu-audio.mp3');
     this.load.audio('finish-audio', 'assets/finish-audio.mp3');
+    this.load.audio('game-audio', 'assets/game.mp3');
     this.load.image('crystal', 'assets/Crystal.png');
     this.load.image('sign-2', 'assets/Sign_2.png');
     this.load.image('sign-1', 'assets/Sign_1.png');
@@ -35,6 +37,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('d-button', 'assets/dbutton.png');
     this.load.image('w-button', 'assets/wbutton.png');
     this.load.image('star', 'assets/star.png');
+    this.load.image('arrow', 'assets/arrow.png');
 
     santaElementsWalk.forEach(img => {
       this.load.image(img, `assets/${img}.png`)

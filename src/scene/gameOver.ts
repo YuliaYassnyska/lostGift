@@ -29,12 +29,12 @@ export default class GameOverScene extends Phaser.Scene {
         font: '60px Red Hat Display, sans-serif',
         color: '#ff0000',
         stroke: '#fff',
-        strokeThickness: 4
+        strokeThickness: 8
       })
       .setOrigin(0.5);
 
     const playButton = this.add
-      .text(width / 2, height / 2 + 350, 'Press Enter to Skip', {
+      .text(width / 2, height / 2 + 350, 'Нажми Enter для пропуску', {
         font: '30px Red Hat Display, sans-serif',
         color: '#667BC6',
         stroke: '#fff',
