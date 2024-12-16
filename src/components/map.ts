@@ -89,6 +89,14 @@ export default class Map {
         type: 'decor',
         texture: 'tree',
       },
+      '7': {
+        type: 'decor',
+        texture: 'deer',
+      },
+      '8': {
+        type: 'decor',
+        texture: 'ball',
+      },
       E: {
         type: 'end',
         texture: 'end',

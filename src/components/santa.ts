@@ -74,7 +74,7 @@ export default class Santa extends Phaser.Physics.Arcade.Sprite {
       }
     }
     if (
-      (cursors.up?.isDown || cursors.space?.isDown || controls.upIsDown) &&
+      (cursors.up?.isDown ||  controls.upIsDown) &&
       this.body.blocked.down
     ) {
       this.setVelocityY(-1250);

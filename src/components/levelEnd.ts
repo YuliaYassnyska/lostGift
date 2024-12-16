@@ -3,7 +3,7 @@ import { TilesConfig } from '../types/types';
 export default class LevelEnd extends Phaser.Physics.Arcade.Sprite {
   private _loadNextLevel: boolean = false
   constructor(scene: Phaser.Scene, tilesConfig: TilesConfig) {
-    super(scene, tilesConfig.x - 30, tilesConfig.y + 14, 'end')
+    super(scene, tilesConfig.x - 30, tilesConfig.y - 60, 'end')
     scene.add.existing(this)
     scene.physics.add.existing(this)
 
