@@ -61,9 +61,10 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('menu-background', 'assets/menu-back.jpg');
     this.load.image('button', 'assets/button.png');
     this.load.image('life', 'assets/life.png');
+    this.load.image('elf', 'assets/elf.png');
   }
 
   create() {
-    this.scene.start('MenuScene')
+    this.scene.start('MainScene')
   }
 }
