@@ -1,9 +1,9 @@
-import EnemiesBackground from '../components/enemiesBackground';
+import MenuBackground from "../components/menuBackground";
 
 export default class EnemiesScene extends Phaser.Scene {
   currentSlideIndex: number;
   slides: Phaser.GameObjects.Container[];
-  background!: EnemiesBackground;
+  background!: MenuBackground;
 
   constructor() {
     super('EnemiesScene');
@@ -21,7 +21,7 @@ export default class EnemiesScene extends Phaser.Scene {
 
   setupScene() {
     this.cameras.main.setBackgroundColor('#EDEBFF');
-    this.background = new EnemiesBackground(this);
+    this.background = new MenuBackground(this);
     this.background.adjustPosition();
 
     const music = this.sound.add('menu-audio');

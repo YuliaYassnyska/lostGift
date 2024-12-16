@@ -16,7 +16,7 @@ export default class PreloadScene extends Phaser.Scene {
     mapElements.forEach(img => {
       this.load.image(img, `assets/${img}.png`);
     });
-    
+
     this.load.video('story', 'assets/story.mp4');
     this.load.video('game-over', 'assets/game-over.mp4');
     this.load.video('finish', 'assets/finish.mp4');
@@ -25,12 +25,14 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.audio('menu-audio', 'assets/menu-audio.mp3');
     this.load.audio('finish-audio', 'assets/finish-audio.mp3');
     this.load.audio('game-audio', 'assets/game.mp3');
-    this.load.image('crystal', 'assets/Crystal.png');
+    this.load.image('crystal', 'assets/crystal.png');
+    this.load.image('stone', 'assets/Stone.png');
     this.load.image('sign-2', 'assets/Sign_2.png');
     this.load.image('sign-1', 'assets/Sign_1.png');
-    this.load.image('stone', 'assets/Stone.png');
-    this.load.image('tree-group', 'assets/Tree_1.png');
-    this.load.image('tree', 'assets/Tree_2.png');
+    this.load.image('tree-group', 'assets/tree-white.png');
+    this.load.image('deer', 'assets/deer.png');
+    this.load.image('ball', 'assets/ball.png');
+    this.load.image('tree', 'assets/tree.png');
     this.load.image('reindeer', 'assets/reindeer.png');
     this.load.image('finish-background', 'assets/finish.jpg');
     this.load.image('a-button', 'assets/abutton.png');

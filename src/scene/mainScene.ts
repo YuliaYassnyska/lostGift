@@ -95,14 +95,12 @@ export default class MainScene extends Phaser.Scene {
       left: Phaser.Input.Keyboard.KeyCodes.A,
       up: Phaser.Input.Keyboard.KeyCodes.W,
       right: Phaser.Input.Keyboard.KeyCodes.D,
-      space: Phaser.Input.Keyboard.KeyCodes.SPACE,
     };
 
     this.cursors = this.input.keyboard.addKeys({
       left: this.keyBindings.left,
       up: this.keyBindings.up,
       right: this.keyBindings.right,
-      space: this.keyBindings.space,
     });
 
     this.anims.create({

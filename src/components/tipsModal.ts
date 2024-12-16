@@ -9,6 +9,7 @@ export default class TipsModal extends Phaser.GameObjects.GameObject {
   controlsImages: Phaser.GameObjects.Image[];
   changeTipInterval: Phaser.Time.TimerEvent;
   isPaused: boolean;
+  disableSpace: boolean = false;
 
   constructor(scene: Phaser.Scene) {
     super(scene, 'TipsModal');
@@ -76,17 +77,21 @@ export default class TipsModal extends Phaser.GameObjects.GameObject {
       .setDepth(1001);
 
     this.scene.input.keyboard.on('keydown-SPACE', () => {
-      this.nextTip();
+      if (!this.disableSpace) {
+        this.nextTip();
+      }
     });
 
     this.scene.input.keyboard.on('keydown-ENTER', () => {
-      this.blackout.destroy();
-      this.elf.destroy();
-      this.closeButton.destroy();
-      this.tipText.destroy();
-      this.clearControls();
-
+      if (this.blackout && this.elf && this.closeButton && this.tipText) {
+        this.blackout.destroy();
+        this.elf.destroy();
+        this.closeButton.destroy();
+        this.tipText.destroy();
+        this.clearControls();
+      }
       this.resumeGame();
+      this.disableSpace = true;
     });
   }
 
@@ -108,7 +113,7 @@ export default class TipsModal extends Phaser.GameObjects.GameObject {
         .setOrigin(0.5)
         .setDepth(1002)
         .setScrollFactor(0);
-    } else {
+    } else if (this.tipText) {
       this.tipText.setText(this.tips[this.currentTipIndex]);
     }
 
@@ -144,14 +149,20 @@ export default class TipsModal extends Phaser.GameObjects.GameObject {
   }
 
   clearControls() {
-    this.controlsImages.forEach((control) => control.destroy());
+    this.controlsImages.forEach((control) => control && control.destroy());
     this.controlsImages = [];
   }
 
   nextTip() {
     this.currentTipIndex++;
 
-    if (this.currentTipIndex >= this.tips.length) {
+    if (
+      this.currentTipIndex >= this.tips.length &&
+      this.blackout &&
+      this.elf &&
+      this.closeButton &&
+      this.tipText
+    ) {
       this.blackout.destroy();
       this.elf.destroy();
       this.closeButton.destroy();
