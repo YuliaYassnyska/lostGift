@@ -78,6 +78,7 @@ export default class Santa extends Phaser.Physics.Arcade.Sprite {
       this.body.blocked.down
     ) {
       this.setVelocityY(-1250);
+      this.play('jump');
     }
   }
 }

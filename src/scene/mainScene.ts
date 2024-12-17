@@ -9,7 +9,7 @@ import MiniMap from '../components/miniMap';
 import Santa from '../components/santa';
 import GiftGroup from '../components/giftGroup';
 import GiftSingle from '../components/giftSingle';
-import { santaElementsIdle, santaElementsWalk } from './preloadScene';
+import { santaElementsDead, santaElementsIdle, santaElementsJump, santaElementsWalk } from './preloadScene';
 import EnemiesGroup from '../components/enemiesGroup';
 import TankSprite from '../components/tank';
 import LevelEnd from '../components/levelEnd';
@@ -62,7 +62,7 @@ export default class MainScene extends Phaser.Scene {
       0,
       `🎁 : ${this.collectedGifts} / ${this.totalGifts}`,
       {
-        font: '30px Red Hat Display, sans-serif',
+        font: '30px Red Hat Display',
         color: '#7BD3EA',
         stroke: '#fff',
         strokeThickness: 8,
@@ -102,6 +102,7 @@ export default class MainScene extends Phaser.Scene {
       up: this.keyBindings.up,
       right: this.keyBindings.right,
     });
+    this.lights.enable().setAmbientColor(0x333333);
 
     this.anims.create({
       key: 'walk',
@@ -116,6 +117,26 @@ export default class MainScene extends Phaser.Scene {
     this.anims.create({
       key: 'idle',
       frames: santaElementsIdle.map((img, index) => ({
+        key: img,
+        frame: index,
+      })),
+      frameRate: 16,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: 'jump',
+      frames: santaElementsJump.map((img, index) => ({
+        key: img,
+        frame: index,
+      })),
+      frameRate: 16,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: 'dead',
+      frames: santaElementsDead.map((img, index) => ({
         key: img,
         frame: index,
       })),
@@ -162,9 +183,19 @@ export default class MainScene extends Phaser.Scene {
       });
     });
 
+    backButton.on('pointerover', () => {
+      backButton.setTint(0xCDC1FF); 
+      this.input.setDefaultCursor('pointer');  
+    });
+
+    backButton.on('pointerout', () => {
+      backButton.clearTint();  
+      this.input.setDefaultCursor('default');  
+    });
+
     const menuText = this.add
       .text(backButton.x, backButton.y - 5, '⬅ Меню', {
-        fontSize: '36px',
+        fontSize: '36px Red Hat Display',
         color: '#BFECFF',
         stroke: '#fff',
         strokeThickness: 2,
@@ -208,6 +239,7 @@ export default class MainScene extends Phaser.Scene {
           santa.killEnemy();
           enemy.kill();
         } else {
+          santa.play('dead');
           santa.kill();
           this.collectedGifts = 0;
         }

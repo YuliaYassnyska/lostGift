@@ -28,6 +28,16 @@ export default class DecorationsGroup extends Phaser.GameObjects.Group {
 
       if (tile.texture === 'tree') {
         decoration.setScale(0.7);
+
+        this.scene.tweens.add({
+          targets: decoration,
+          scaleX: 0.65,
+          scaleY: 0.75,
+          duration: 500,
+          yoyo: true,
+          repeat: -1,
+          ease: 'Sine.easeInOut',
+        });
       }
       if (tile.texture === 'crystal') {
         decoration.setScale(0.2);
@@ -39,6 +49,22 @@ export default class DecorationsGroup extends Phaser.GameObjects.Group {
 
       if (tile.texture === 'ball') {
         decoration.setScale(0.3);
+        decoration.setPipeline('Light2D');
+
+        const globeLight = this.scene.lights.addLight(
+          decoration.x,
+          decoration.y,
+          200
+        ).setColor(0xffffff).setIntensity(2);
+
+        this.scene.tweens.add({
+          targets: globeLight,
+          x: { from: decoration.x - 50, to: decoration.x + 50 },
+          duration: 2000,
+          yoyo: true,
+          repeat: -1,
+          ease: 'Sine.easeInOut'
+        });
       }
 
       if (tile.texture === 'tree-group') {

@@ -24,7 +24,7 @@ export default class SettingsScene extends Phaser.Scene {
       this.cameras.main.y + 120,
       'Клавіші',
       {
-        font: '128px Red Hat Display, sans-serif',
+        font: '128px Red Hat Display',
         color: '#1744A5',
         stroke: '#fff',
         strokeThickness: 8,
@@ -60,12 +60,30 @@ export default class SettingsScene extends Phaser.Scene {
         ease: 'Sine.easeInOut',
       });
     });
+    moveLeftButton.on('pointerover', () => {
+      moveLeftButton.setTint(0xcdc1ff);
+      this.input.setDefaultCursor('pointer');
+    });
+
+    moveLeftButton.on('pointerout', () => {
+      moveLeftButton.clearTint();
+      this.input.setDefaultCursor('default');
+    });
     const moveUpButton = this.createButton(
       centerX,
       centerY + 100,
       '⚙️ Ввверх',
       'up'
     );
+    moveUpButton.on('pointerover', () => {
+      moveUpButton.setTint(0xcdc1ff);
+      this.input.setDefaultCursor('pointer');
+    });
+
+    moveUpButton.on('pointerout', () => {
+      moveUpButton.clearTint();
+      this.input.setDefaultCursor('default');
+    });
     moveUpButton.on('pointerdown', () => {
       this.tweens.add({
         targets: moveUpButton,
@@ -82,6 +100,15 @@ export default class SettingsScene extends Phaser.Scene {
       '⚙️ Вправо',
       'right'
     );
+    moveRightButton.on('pointerover', () => {
+      moveRightButton.setTint(0xcdc1ff);
+      this.input.setDefaultCursor('pointer');
+    });
+
+    moveRightButton.on('pointerout', () => {
+      moveRightButton.clearTint();
+      this.input.setDefaultCursor('default');
+    });
     moveRightButton.on('pointerdown', () => {
       this.tweens.add({
         targets: moveRightButton,
@@ -112,6 +139,15 @@ export default class SettingsScene extends Phaser.Scene {
           music.stop();
         },
       });
+    });
+    backButton.on('pointerover', () => {
+      backButton.setTint(0xcdc1ff);
+      this.input.setDefaultCursor('pointer');
+    });
+
+    backButton.on('pointerout', () => {
+      backButton.clearTint();
+      this.input.setDefaultCursor('default');
     });
   }
 
@@ -152,7 +188,7 @@ export default class SettingsScene extends Phaser.Scene {
       .text(
         this.cameras.main.centerX,
         this.cameras.main.centerY - 150,
-        `\nЛіво: ${this.keyBindings.left}\nВверх: ${this.keyBindings.up}\nПраво: ${this.keyBindings.right}\nСтрибок: ${this.keyBindings.space}`,
+        `\nЛіво: ${this.keyBindings.left}\nВверх: ${this.keyBindings.up}\nПраво: ${this.keyBindings.right}`,
         {
           font: '32px Arial',
           color: '#667BC6',
@@ -162,57 +198,18 @@ export default class SettingsScene extends Phaser.Scene {
       )
       .setOrigin(0.5);
   }
-
+  
   update() {
     if (this.waitingForKey) {
-      const keys = this.input.keyboard.addKeys([
-        'A',
-        'B',
-        'C',
-        'D',
-        'E',
-        'F',
-        'G',
-        'H',
-        'I',
-        'J',
-        'K',
-        'L',
-        'M',
-        'N',
-        'O',
-        'P',
-        'Q',
-        'R',
-        'S',
-        'T',
-        'U',
-        'V',
-        'W',
-        'X',
-        'Y',
-        'Z',
-        'UP',
-        'DOWN',
-        'LEFT',
-        'RIGHT',
-        'SPACE',
-        'ENTER',
-        'SHIFT',
-        'CONTROL',
-        'ALT',
-        'ESC',
-      ]);
-
-      Object.keys(keys).forEach((keyName) => {
-        const key = keys[keyName];
-        if (key.isDown) {
-          this.keyBindings[this.waitingForKey] = key.keyCode;
-          this.waitingForKey = null;
-          this.displayKeyBindings();
-          this.registry.set('keyBindings', this.keyBindings); 
+      this.input.keyboard.on('keydown', (event) => {
+        if (event.key !== this.keyBindings[this.waitingForKey]) {
+          this.keyBindings[this.waitingForKey] = event.key.toUpperCase();
+          this.waitingForKey = null;  
+          this.displayKeyBindings(); 
+          this.registry.set('keyBindings', this.keyBindings);  
         }
       });
     }
   }
+  
 }

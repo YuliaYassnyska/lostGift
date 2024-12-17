@@ -159,6 +159,16 @@ export default class EnemiesScene extends Phaser.Scene {
         });
       });
 
+    backButton.on('pointerover', () => {
+      backButton.setTint(0xCDC1FF);
+      this.input.setDefaultCursor('pointer');
+    });
+
+    backButton.on('pointerout', () => {
+      backButton.clearTint();
+      this.input.setDefaultCursor('default');
+    });
+
     this.add
       .text(backButton.x, backButton.y - 5, '⬅ Mеню', {
         fontSize: '36px',

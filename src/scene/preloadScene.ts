@@ -1,4 +1,6 @@
 export const santaElementsWalk = ['SantaWalk-1', 'SantaWalk-2', 'SantaWalk-3', 'SantaWalk-4', 'SantaWalk-5', 'SantaWalk-6', 'SantaWalk-7', 'SantaWalk-8'];
+export const santaElementsJump = ['Jump-1', 'Jump-2', 'Jump-3', 'Jump-4', 'Jump-5', 'Jump-6', 'Jump-7', 'Jump-8', 'Jump-9', 'Jump-10', 'Jump-11', 'Jump-12', 'Jump-13', 'Jump-14', 'Jump-15', 'Jump-16'];
+export const santaElementsDead = ['Dead-1', 'Dead-2', 'Dead-3', 'Dead-4', 'Dead-5', 'Dead-6', 'Dead-7', 'Dead-8', 'Dead-9', 'Dead-10', 'Dead-11', 'Dead-12', 'Dead-13', 'Dead-14', 'Dead-15', 'Dead-16'];
 export const santaElementsIdle = ['Idle-1', 'Idle-2', 'Idle-3', 'Idle-4', 'Idle-5', 'Idle-6', 'Idle-7', 'Idle-8', 'Idle-9', 'Idle-10', 'Idle-11', 'Idle-12', 'Idle-13', 'Idle-14', 'Idle-15', 'Idle-16'];
 export const birdElements = ['bird-1', 'bird-2', 'bird-3', 'bird-4',];
 export default class PreloadScene extends Phaser.Scene {
@@ -24,8 +26,8 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.audio('game-over-audio', 'assets/game-over-audio.mp3');
     this.load.audio('menu-audio', 'assets/menu-audio.mp3');
     this.load.audio('finish-audio', 'assets/finish-audio.mp3');
-    this.load.audio('game-audio', 'assets/game.mp3');
-    this.load.image('crystal', 'assets/crystal.png');
+    this.load.audio('game-audio', 'assets/game-audio.mp3');
+    this.load.image('crystal', 'assets/Crystal.png');
     this.load.image('stone', 'assets/Stone.png');
     this.load.image('sign-2', 'assets/Sign_2.png');
     this.load.image('sign-1', 'assets/Sign_1.png');
@@ -49,7 +51,14 @@ export default class PreloadScene extends Phaser.Scene {
       this.load.image(img, `assets/${img}.png`)
     });
 
-    
+    santaElementsJump.forEach(img => {
+      this.load.image(img, `assets/${img}.png`)
+    });
+
+    santaElementsDead.forEach(img => {
+      this.load.image(img, `assets/${img}.png`)
+    });
+
     birdElements.forEach(img => {
       this.load.image(img, `assets/${img}.png`);
     });
@@ -67,6 +76,6 @@ export default class PreloadScene extends Phaser.Scene {
   }
 
   create() {
-    this.scene.start('MainScene')
+    this.scene.start('MenuScene')
   }
 }

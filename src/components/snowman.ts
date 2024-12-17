@@ -129,6 +129,7 @@ export default class SnowmanSprite extends EnemyClass {
 
   private stopMovement() {
     const body = this.body as Phaser.Physics.Arcade.Body;
+    //@ts-ignore
     body.setVelocityX(0);
   }
 
