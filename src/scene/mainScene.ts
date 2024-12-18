@@ -9,7 +9,7 @@ import MiniMap from '../components/miniMap';
 import Santa from '../components/santa';
 import GiftGroup from '../components/giftGroup';
 import GiftSingle from '../components/giftSingle';
-import { santaElementsDead, santaElementsIdle, santaElementsJump, santaElementsWalk } from './preloadScene';
+import { santaElementsDead, santaElementsIdle, santaElementsJump, santaElementsWalk, wizardAttack, wizardDead, wizardIdle, wizardWalk } from './preloadScene';
 import EnemiesGroup from '../components/enemiesGroup';
 import TankSprite from '../components/tank';
 import LevelEnd from '../components/levelEnd';
@@ -17,6 +17,7 @@ import DecorationsGroup from '../components/decorGroup';
 import Reindeer from '../components/reindeer';
 import LiftSprite from '../components/life';
 import TipsModal from '../components/tipsModal';
+import FreezeEnemySprite from '../components/iceEnemy';
 
 const TOTAL_LEVELS = 2;
 
@@ -125,6 +126,36 @@ export default class MainScene extends Phaser.Scene {
     });
 
     this.anims.create({
+      key: 'wizard-idle',
+      frames: wizardIdle.map((img, index) => ({
+        key: img,
+        frame: index,
+      })),
+      frameRate: 16,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: 'wizard-attack',
+      frames: wizardAttack.map((img, index) => ({
+        key: img,
+        frame: index,
+      })),
+      frameRate: 8,
+      repeat: 0,
+    });
+
+    this.anims.create({
+      key: 'wizard-walk',
+      frames: wizardWalk.map((img, index) => ({
+        key: img,
+        frame: index,
+      })),
+      frameRate: 16,
+      repeat: -1,
+    });
+
+    this.anims.create({
       key: 'jump',
       frames: santaElementsJump.map((img, index) => ({
         key: img,
@@ -141,7 +172,17 @@ export default class MainScene extends Phaser.Scene {
         frame: index,
       })),
       frameRate: 16,
-      repeat: -1,
+      repeat: 0,
+    });
+
+    this.anims.create({
+      key: 'wizard-dead',
+      frames: wizardDead.map((img, index) => ({
+        key: img,
+        frame: index,
+      })),
+      frameRate: 16,
+      repeat: 0,
     });
 
     this.cameras.main.setBounds(
@@ -177,6 +218,7 @@ export default class MainScene extends Phaser.Scene {
         yoyo: true,
         ease: 'Sine.easeInOut',
         onComplete: () => {
+          this.updateLives(true);
           this.scene.start('MenuScene');
           this.music.stop();
         },
@@ -184,13 +226,13 @@ export default class MainScene extends Phaser.Scene {
     });
 
     backButton.on('pointerover', () => {
-      backButton.setTint(0xCDC1FF); 
-      this.input.setDefaultCursor('pointer');  
+      backButton.setTint(0xCDC1FF);
+      this.input.setDefaultCursor('pointer');
     });
 
     backButton.on('pointerout', () => {
-      backButton.clearTint();  
-      this.input.setDefaultCursor('default');  
+      backButton.clearTint();
+      this.input.setDefaultCursor('default');
     });
 
     const menuText = this.add
@@ -235,7 +277,10 @@ export default class MainScene extends Phaser.Scene {
       this.enemiesGroup,
       (santa: Santa, enemy: TankSprite) => {
         if (enemy.dead) return;
-        if (enemy.body.touching.up && santa.body.touching.down) {
+        if (enemy instanceof FreezeEnemySprite) {
+          return;
+        }
+        else if (enemy.body.touching.up && santa.body.touching.down) {
           santa.killEnemy();
           enemy.kill();
         } else {

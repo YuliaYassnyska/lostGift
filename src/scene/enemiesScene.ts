@@ -72,6 +72,11 @@ export default class EnemiesScene extends Phaser.Scene {
           'Ця зірка спочатку висить, спостерігаючи за тобою, як хтось із твоїх знайомих. Але коли вона помічає тебе, готуйся до падіння... прямо на голову!',
         spriteKey: 'star',
       },
+      {
+        name: 'Вуйко Чарівник',
+        description: 'Чарівник, який заморожує все на своєму шляху. Його закляття не завжди точні, але він точно знає, як заморозити твій настрій!',
+        spriteKey: 'wizard-1',
+      }
     ];
 
     this.slides.forEach((slide) => slide.destroy());
@@ -116,6 +121,7 @@ export default class EnemiesScene extends Phaser.Scene {
       'bird-1': 0.2,
       reindeer: 0.15,
       star: 0.5,
+      'wizard-1': 0.5,
     };
     return scales[spriteKey] || 1;
   }

@@ -113,6 +113,10 @@ export default class Map {
         type: 'enemy',
         texture: 'star',
       },
+      W: {
+        type: 'enemy',
+        texture: 'wizard',
+      },
     };
 
     const map = Levels[Map.calcCurrentLevel(currentLevel)];

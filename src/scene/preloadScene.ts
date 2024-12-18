@@ -3,6 +3,11 @@ export const santaElementsJump = ['Jump-1', 'Jump-2', 'Jump-3', 'Jump-4', 'Jump-
 export const santaElementsDead = ['Dead-1', 'Dead-2', 'Dead-3', 'Dead-4', 'Dead-5', 'Dead-6', 'Dead-7', 'Dead-8', 'Dead-9', 'Dead-10', 'Dead-11', 'Dead-12', 'Dead-13', 'Dead-14', 'Dead-15', 'Dead-16'];
 export const santaElementsIdle = ['Idle-1', 'Idle-2', 'Idle-3', 'Idle-4', 'Idle-5', 'Idle-6', 'Idle-7', 'Idle-8', 'Idle-9', 'Idle-10', 'Idle-11', 'Idle-12', 'Idle-13', 'Idle-14', 'Idle-15', 'Idle-16'];
 export const birdElements = ['bird-1', 'bird-2', 'bird-3', 'bird-4',];
+export const wizardIdle = ['wizard-1', 'wizard-2', 'wizard-3', 'wizard-4', 'wizard-5'];
+export const wizardAttack = ['wizard-attack-1', 'wizard-attack-2', 'wizard-attack-3', 'wizard-attack-4', 'wizard-attack-5'];
+export const wizardWalk = ['wizard-walk-1', 'wizard-walk-2', 'wizard-walk-3', 'wizard-walk-4', 'wizard-walk-5'];
+export const wizardDead = ['wizard-dead-1', 'wizard-dead-2', 'wizard-dead-3', 'wizard-dead-4', 'wizard-dead-5'];
+
 export default class PreloadScene extends Phaser.Scene {
   constructor() {
     super({
@@ -60,6 +65,22 @@ export default class PreloadScene extends Phaser.Scene {
     });
 
     birdElements.forEach(img => {
+      this.load.image(img, `assets/${img}.png`);
+    });
+
+    wizardIdle.forEach(img => {
+      this.load.image(img, `assets/${img}.png`);
+    });
+
+    wizardAttack.forEach(img => {
+      this.load.image(img, `assets/${img}.png`);
+    });
+
+    wizardWalk.forEach(img => {
+      this.load.image(img, `assets/${img}.png`);
+    });
+
+    wizardDead.forEach(img => {
       this.load.image(img, `assets/${img}.png`);
     });
 
