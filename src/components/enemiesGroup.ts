@@ -3,17 +3,19 @@ import SnowmanSprite from './snowman';
 import { TilesConfig } from '../types/types';
 import FlyEnemySprite from './flyEnemy';
 import StarSprite from './star';
+import FreezeEnemySprite from './iceEnemy';
+import Santa from './santa';
 
 export default class EnemiesGroup extends Phaser.GameObjects.Group {
   tiles: TilesConfig[]
   TILE_SIZE = 96
-  constructor(scene: Phaser.Scene, tilesConfig: TilesConfig[], santa: Phaser.GameObjects.Sprite) {
+  constructor(scene: Phaser.Scene, tilesConfig: TilesConfig[], santa: Santa) {
     super(scene)
 
     this.tiles = tilesConfig.filter(tile => tile.type === 'tile')
     let enemyTypes = tilesConfig.filter(tile => tile.type === 'enemy')
 
-    let enemies: Array<TankSprite | SnowmanSprite | FlyEnemySprite | StarSprite> = []
+    let enemies: Array<TankSprite | SnowmanSprite | FlyEnemySprite | StarSprite | FreezeEnemySprite> = []
     enemyTypes.forEach(enemy => {
       switch (enemy.texture) {
         case 'tank':
@@ -30,13 +32,22 @@ export default class EnemiesGroup extends Phaser.GameObjects.Group {
           enemies.push(star);
           scene.events.on('update', () => star.update());
           break
+        case 'wizard':
+          const freezeEnemy = new FreezeEnemySprite(scene, enemy.x, enemy.y);
+          enemies.push(freezeEnemy);
+          scene.physics.add.overlap(santa, freezeEnemy, (_, enemy) => {
+            if (enemy instanceof FreezeEnemySprite) {
+              enemy.handleOverlap(santa);
+            }
+          });
+          break;
       }
     })
     this.addMultiple(enemies)
   }
 
   update() {
-    this.children.iterate((enemy: TankSprite | SnowmanSprite | FlyEnemySprite | StarSprite) => {
+    this.children.iterate((enemy: TankSprite | SnowmanSprite | FlyEnemySprite | StarSprite | FreezeEnemySprite) => {
 
       const body = enemy.body as Phaser.Physics.Arcade.Body;
 

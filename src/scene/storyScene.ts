@@ -29,7 +29,7 @@ export default class VideoScene extends Phaser.Scene {
 
     this.add
       .text(centerX, this.cameras.main.height - 50, 'Нажми Enter для пропуску', {
-        font: '26px Red Hat Display, sans-serif',
+        font: '26px Red Hat Display',
         color: 'rgb(22, 119, 255)',
         stroke: '#fff',
         strokeThickness: 4,

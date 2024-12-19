@@ -26,7 +26,7 @@ export default class FinishScene extends Phaser.Scene {
 
     const playButton = this.add
       .text(width / 2, height / 2 + 350, 'Нажми Enter для пропуску', {
-        font: '30px Red Hat Display, sans-serif',
+        font: '30px Red Hat Display',
         color: '#667BC6',
         stroke: '#fff',
         strokeThickness: 4

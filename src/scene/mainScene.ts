@@ -9,7 +9,16 @@ import MiniMap from '../components/miniMap';
 import Santa from '../components/santa';
 import GiftGroup from '../components/giftGroup';
 import GiftSingle from '../components/giftSingle';
-import { santaElementsIdle, santaElementsWalk } from './preloadScene';
+import {
+  santaElementsDead,
+  santaElementsIdle,
+  santaElementsJump,
+  santaElementsWalk,
+  wizardAttack,
+  wizardDead,
+  wizardIdle,
+  wizardWalk,
+} from './preloadScene';
 import EnemiesGroup from '../components/enemiesGroup';
 import TankSprite from '../components/tank';
 import LevelEnd from '../components/levelEnd';
@@ -17,6 +26,7 @@ import DecorationsGroup from '../components/decorGroup';
 import Reindeer from '../components/reindeer';
 import LiftSprite from '../components/life';
 import TipsModal from '../components/tipsModal';
+import FreezeEnemySprite from '../components/iceEnemy';
 
 const TOTAL_LEVELS = 2;
 
@@ -62,7 +72,7 @@ export default class MainScene extends Phaser.Scene {
       0,
       `🎁 : ${this.collectedGifts} / ${this.totalGifts}`,
       {
-        font: '30px Red Hat Display, sans-serif',
+        font: '30px Red Hat Display',
         color: '#7BD3EA',
         stroke: '#fff',
         strokeThickness: 8,
@@ -102,6 +112,7 @@ export default class MainScene extends Phaser.Scene {
       up: this.keyBindings.up,
       right: this.keyBindings.right,
     });
+    this.lights.enable().setAmbientColor(0x333333);
 
     this.anims.create({
       key: 'walk',
@@ -121,6 +132,66 @@ export default class MainScene extends Phaser.Scene {
       })),
       frameRate: 16,
       repeat: -1,
+    });
+
+    this.anims.create({
+      key: 'wizard-idle',
+      frames: wizardIdle.map((img, index) => ({
+        key: img,
+        frame: index,
+      })),
+      frameRate: 16,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: 'wizard-attack',
+      frames: wizardAttack.map((img, index) => ({
+        key: img,
+        frame: index,
+      })),
+      frameRate: 8,
+      repeat: 0,
+    });
+
+    this.anims.create({
+      key: 'wizard-walk',
+      frames: wizardWalk.map((img, index) => ({
+        key: img,
+        frame: index,
+      })),
+      frameRate: 16,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: 'jump',
+      frames: santaElementsJump.map((img, index) => ({
+        key: img,
+        frame: index,
+      })),
+      frameRate: 16,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: 'dead',
+      frames: santaElementsDead.map((img, index) => ({
+        key: img,
+        frame: index,
+      })),
+      frameRate: 16,
+      repeat: 0,
+    });
+
+    this.anims.create({
+      key: 'wizard-dead',
+      frames: wizardDead.map((img, index) => ({
+        key: img,
+        frame: index,
+      })),
+      frameRate: 16,
+      repeat: 0,
     });
 
     this.cameras.main.setBounds(
@@ -156,15 +227,26 @@ export default class MainScene extends Phaser.Scene {
         yoyo: true,
         ease: 'Sine.easeInOut',
         onComplete: () => {
+          this.updateLives(true);
           this.scene.start('MenuScene');
           this.music.stop();
         },
       });
     });
 
+    backButton.on('pointerover', () => {
+      backButton.setTint(0xcdc1ff);
+      this.input.setDefaultCursor('pointer');
+    });
+
+    backButton.on('pointerout', () => {
+      backButton.clearTint();
+      this.input.setDefaultCursor('default');
+    });
+
     const menuText = this.add
       .text(backButton.x, backButton.y - 5, '⬅ Меню', {
-        fontSize: '36px',
+        fontSize: '36px Red Hat Display',
         color: '#BFECFF',
         stroke: '#fff',
         strokeThickness: 2,
@@ -204,10 +286,13 @@ export default class MainScene extends Phaser.Scene {
       this.enemiesGroup,
       (santa: Santa, enemy: TankSprite) => {
         if (enemy.dead) return;
-        if (enemy.body.touching.up && santa.body.touching.down) {
+        if (enemy instanceof FreezeEnemySprite) {
+          return;
+        } else if (enemy.body.touching.up && santa.body.touching.down) {
           santa.killEnemy();
           enemy.kill();
         } else {
+          santa.play('dead');
           santa.kill();
           this.collectedGifts = 0;
         }
@@ -274,6 +359,7 @@ export default class MainScene extends Phaser.Scene {
       this.level === 2 ? map.size.height / 16 : map.size.height / 8,
       map
     );
+
     this.miniMap.setIgnore([
       this.background,
       this.controls.buttons.up,
@@ -289,6 +375,7 @@ export default class MainScene extends Phaser.Scene {
       this.tipsModal.blackout,
       this.tipsModal.controlsImages,
     ]);
+
     this.miniMap.update(this.santa);
 
     const resize = () => {
@@ -375,5 +462,49 @@ export default class MainScene extends Phaser.Scene {
     this.music.stop();
     this.updateLives(true);
     this.scene.start('GameOverScene');
+  }
+
+  createIcicleAnimation() {
+    const icicleRight = this.add
+      .sprite(
+        this.cameras.main.width - 100,
+        this.cameras.main.height + 800,
+        'icicle'
+      )
+      .setOrigin(0.5)
+      .setDepth(101)
+      .setRotation(Phaser.Math.DegToRad(180));
+
+    const endX = this.cameras.main.width - 100;
+    const endY = this.cameras.main.height + 300;
+
+    this.tweens.add({
+      targets: icicleRight,
+      x: endX,
+      y: endY,
+      duration: 2000,
+      ease: 'Power2',
+      yoyo: true,
+      repeat: 0,
+    });
+
+    const icicleLeft = this.add
+      .sprite(100, this.cameras.main.height + 800, 'icicle')
+      .setOrigin(0.5)
+      .setDepth(101)
+      .setRotation(Phaser.Math.DegToRad(230));
+
+    const endXLeft = 100;
+    const endYLeft = this.cameras.main.height + 300;
+
+    this.tweens.add({
+      targets: icicleLeft,
+      x: endXLeft,
+      y: endYLeft,
+      duration: 2000,
+      ease: 'Power2',
+      yoyo: true,
+      repeat: 0,
+    });
   }
 }

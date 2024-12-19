@@ -19,7 +19,7 @@ export default class LevelsScene extends Phaser.Scene {
       this.cameras.main.y + 120,
       'Вибір рівня',
       {
-        font: '128px Red Hat Display, sans-serif',
+        font: '128px Red Hat Display',
         color: 'rgba(22, 119, 255, 0.32)',
         stroke: '#fff',
         strokeThickness: 8,
@@ -74,6 +74,16 @@ export default class LevelsScene extends Phaser.Scene {
         });
       });
 
+      button.on('pointerover', () => {
+        button.setTint(0xCDC1FF); 
+        this.input.setDefaultCursor('pointer');  
+      });
+  
+      button.on('pointerout', () => {
+        button.clearTint();  
+        this.input.setDefaultCursor('default');  
+      });
+
       this.add
         .text(button.x, button.y - 5, level.text, {
           fontSize: '36px',
@@ -101,6 +111,16 @@ export default class LevelsScene extends Phaser.Scene {
           music.stop();
         },
       });
+    });
+
+    backButton.on('pointerover', () => {
+      backButton.setTint(0xCDC1FF); 
+      this.input.setDefaultCursor('pointer');  
+    });
+
+    backButton.on('pointerout', () => {
+      backButton.clearTint();  
+      this.input.setDefaultCursor('default');  
     });
 
     this.add
