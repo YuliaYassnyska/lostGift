@@ -9,7 +9,16 @@ import MiniMap from '../components/miniMap';
 import Santa from '../components/santa';
 import GiftGroup from '../components/giftGroup';
 import GiftSingle from '../components/giftSingle';
-import { santaElementsDead, santaElementsIdle, santaElementsJump, santaElementsWalk, wizardAttack, wizardDead, wizardIdle, wizardWalk } from './preloadScene';
+import {
+  santaElementsDead,
+  santaElementsIdle,
+  santaElementsJump,
+  santaElementsWalk,
+  wizardAttack,
+  wizardDead,
+  wizardIdle,
+  wizardWalk,
+} from './preloadScene';
 import EnemiesGroup from '../components/enemiesGroup';
 import TankSprite from '../components/tank';
 import LevelEnd from '../components/levelEnd';
@@ -226,7 +235,7 @@ export default class MainScene extends Phaser.Scene {
     });
 
     backButton.on('pointerover', () => {
-      backButton.setTint(0xCDC1FF);
+      backButton.setTint(0xcdc1ff);
       this.input.setDefaultCursor('pointer');
     });
 
@@ -279,8 +288,7 @@ export default class MainScene extends Phaser.Scene {
         if (enemy.dead) return;
         if (enemy instanceof FreezeEnemySprite) {
           return;
-        }
-        else if (enemy.body.touching.up && santa.body.touching.down) {
+        } else if (enemy.body.touching.up && santa.body.touching.down) {
           santa.killEnemy();
           enemy.kill();
         } else {
@@ -351,6 +359,7 @@ export default class MainScene extends Phaser.Scene {
       this.level === 2 ? map.size.height / 16 : map.size.height / 8,
       map
     );
+
     this.miniMap.setIgnore([
       this.background,
       this.controls.buttons.up,
@@ -366,6 +375,7 @@ export default class MainScene extends Phaser.Scene {
       this.tipsModal.blackout,
       this.tipsModal.controlsImages,
     ]);
+
     this.miniMap.update(this.santa);
 
     const resize = () => {
@@ -452,5 +462,49 @@ export default class MainScene extends Phaser.Scene {
     this.music.stop();
     this.updateLives(true);
     this.scene.start('GameOverScene');
+  }
+
+  createIcicleAnimation() {
+    const icicleRight = this.add
+      .sprite(
+        this.cameras.main.width - 100,
+        this.cameras.main.height + 800,
+        'icicle'
+      )
+      .setOrigin(0.5)
+      .setDepth(101)
+      .setRotation(Phaser.Math.DegToRad(180));
+
+    const endX = this.cameras.main.width - 100;
+    const endY = this.cameras.main.height + 300;
+
+    this.tweens.add({
+      targets: icicleRight,
+      x: endX,
+      y: endY,
+      duration: 2000,
+      ease: 'Power2',
+      yoyo: true,
+      repeat: 0,
+    });
+
+    const icicleLeft = this.add
+      .sprite(100, this.cameras.main.height + 800, 'icicle')
+      .setOrigin(0.5)
+      .setDepth(101)
+      .setRotation(Phaser.Math.DegToRad(230));
+
+    const endXLeft = 100;
+    const endYLeft = this.cameras.main.height + 300;
+
+    this.tweens.add({
+      targets: icicleLeft,
+      x: endXLeft,
+      y: endYLeft,
+      duration: 2000,
+      ease: 'Power2',
+      yoyo: true,
+      repeat: 0,
+    });
   }
 }

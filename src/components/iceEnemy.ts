@@ -15,8 +15,8 @@ export default class FreezeEnemySprite extends EnemyClass {
     this.body.setVelocityX(-60);
     this.setOrigin(0.5, 1);
     this.setScale(0.4);
-    this.body.setSize(this.width - 60, this.height); 
-    this.body.setOffset(0, 0);
+    this.body.setSize(this.width - 80, this.height);
+    this.body.setOffset(0, -20);
 
     this.startStopBehavior();
   }
@@ -30,7 +30,8 @@ export default class FreezeEnemySprite extends EnemyClass {
     santa.anims.stop();
     santa.setAlpha(0.5);
     this.play('wizard-attack');
-
+    // @ts-ignore
+    this.scene.createIcicleAnimation();
     const attackCompleteHandler = (animation: Phaser.Animations.Animation) => {
       if (animation.key === 'wizard-attack') {
         this.off(
@@ -70,6 +71,7 @@ export default class FreezeEnemySprite extends EnemyClass {
     });
   }
 
+
   handleOverlap(santa: Santa) {
     if (!this._dead) {
       this.freezeSanta(santa);
@@ -101,7 +103,7 @@ export default class FreezeEnemySprite extends EnemyClass {
         this.body.setVelocityX(-60);
         this.play('wizard-walk');
         this.setFlipX(true);
-         //@ts-ignore
+        //@ts-ignore
         this.body.setAllowGravity(true);
       }
     }
