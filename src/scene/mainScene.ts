@@ -369,11 +369,6 @@ export default class MainScene extends Phaser.Scene {
       ...this.lifeSprites,
       backButton,
       menuText,
-      this.tipsModal.elf,
-      this.tipsModal.tipText,
-      this.tipsModal.closeButton,
-      this.tipsModal.blackout,
-      this.tipsModal.controlsImages,
     ]);
 
     this.miniMap.update(this.santa);
